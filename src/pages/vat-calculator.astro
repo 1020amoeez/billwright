@@ -1,0 +1,91 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import Calculator from '~/components/tool/Calculator.astro';
+import FormulaBlock from '~/components/tool/FormulaBlock.astro';
+import { countries } from '~/data/countries';
+
+const rateOptions = countries
+  .filter((c) => c.taxRate !== null)
+  .map((c) => ({
+    value: String(c.taxRate),
+    label: `${c.name} — ${c.taxLabel} ${c.taxRate}%`,
+  }));
+
+const faqs = [
+  {
+    q: 'How do I take VAT out of a price that already includes it?',
+    a: 'Divide by 1 plus the rate, not by the rate. At 20%, divide the gross price by 1.2 to get the net amount; the difference is the VAT. Taking 20% off the gross price gives the wrong answer every time.',
+  },
+  {
+    q: 'My country calls it GST or sales tax. Does that matter?',
+    a: 'Not for the arithmetic. GST in India and Australia, VAT in the UK and the Gulf, sales tax in Pakistan — the calculation is identical, only the name and the rate change.',
+  },
+  {
+    q: 'Why is US sales tax not in the list?',
+    a: 'Because there is no national rate. It is set by state and often by city too, so pick "Other rate" and enter the combined rate that applies where the sale happens.',
+  },
+];
+---
+
+<ToolLayout
+  href="/vat-calculator"
+  title="VAT calculator — add VAT to a price or take it out"
+  description="Add VAT to a net price or strip it out of a gross one. Pick your country and the rate fills itself in. Free, instant and entirely in your browser."
+  heading="VAT calculator"
+  standfirst="Add VAT to a price, or work out the VAT already inside one. Pick your country and the rate fills itself in."
+  faqs={faqs}
+  related={[
+    '/profit-margin-calculator',
+    '/markup-calculator',
+    '/break-even-calculator',
+    '/freelance-rate-calculator',
+    '/invoice-generator',
+  ]}
+>
+  <Calculator
+    slot="calculator"
+    calc="vat"
+    fields={[
+      { name: 'amount', label: 'Amount', value: '1,000' },
+      {
+        name: 'direction',
+        label: 'This amount is',
+        value: 'net',
+        options: [
+          { value: 'net', label: 'Before tax — add it' },
+          { value: 'gross', label: 'After tax — take it out' },
+        ],
+      },
+      {
+        name: 'country',
+        label: 'Country',
+        value: '20',
+        options: [...rateOptions, { value: 'other', label: 'Other rate' }],
+      },
+      { name: 'customRate', label: 'Other rate (%)', placeholder: 'e.g. 8.25' },
+    ]}
+    primaryLabel="Tax amount"
+    statLabels={['Before tax', 'After tax', 'Rate', 'Tax share of the total']}
+  />
+
+  <h2>Adding it on, and taking it back out</h2>
+  <p>
+    Adding tax is the easy direction: multiply by the rate and add it on. Taking it out of a price
+    that already includes it trips people up, because the tax was calculated on the smaller net
+    figure, not on the gross one you are holding. Dividing solves it.
+  </p>
+
+  <FormulaBlock
+    rows={[
+      { label: 'Add', formula: 'Net × (1 + Rate ÷ 100)' },
+      { label: 'Remove', formula: 'Gross ÷ (1 + Rate ÷ 100)' },
+    ]}
+  />
+
+  <h3>A worked example</h3>
+  <p>
+    A gross price of 1,200 at 20% VAT is not 240 of VAT. Divide 1,200 by 1.2 to get a net price of
+    1,000, which means the VAT inside it is 200. Taking 20% off 1,200 would have overstated the VAT
+    by 40 and understated what you actually earned.
+  </p>
+</ToolLayout>

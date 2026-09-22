@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Invoice generator</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;background:#101522;color:#F3F5F9}
+a{color:#F3F5F9;text-decoration:none}a:hover{color:#FFB020}
+input,select,textarea{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1160px; box-sizing: border-box; background: #101522; color: #F3F5F9; display: flex; flex-direction: column; font-family: 'IBM Plex Sans', system-ui, sans-serif; overflow: hidden;">
+
+  <!-- Nav -->
+  <header style="height: 72px; flex-shrink: 0; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1F2738;">
+    <a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.01em;">
+      <svg width="26" height="26" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M4 3h15l7 7v17H4z" fill="{{accent}}"/><path d="M9 15h12M9 20h8" stroke="#101522" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Billwright
+    </a>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #A9B1C3;">Template
+        <select style="height: 40px; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 14px;"><option>Classic</option><option>Compact</option><option>Bold header</option></select>
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #A9B1C3;">Currency
+        <select style="height: 40px; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 14px;"><option>PKR</option><option>USD</option><option>AED</option><option>GBP</option></select>
+      </label>
+      <button type="button" style="height: 44px; padding: 0 22px; border-radius: 10px; background: {{accent}}; color: #101522; border: 0; font-weight: 600; font-size: 15px; font-family: inherit; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+        Download PDF
+      </button>
+    </div>
+  </header>
+
+  <div style="flex-grow: 1; display: grid; grid-template-columns: 560px minmax(0, 1fr); min-height: 0;">
+
+    <!-- Form -->
+    <div style="box-sizing: border-box; padding: 32px 40px 40px; border-right: 1px solid #1F2738; display: flex; flex-direction: column; gap: 28px; overflow: hidden;">
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Your business</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Business name
+            <input type="text" value="Meridian Studio" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Email
+            <input type="email" placeholder="hello@yourbusiness.com" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+          </label>
+        </div>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Address
+          <input type="text" placeholder="Street, city, postcode" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+        </label>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Bill to</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Client name
+            <input type="text" value="Northwind Traders" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Due date
+            <input type="text" value="12 Oct 2026" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+          </label>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Items</h2>
+          <button type="button" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid #3A4459; background: transparent; color: #F3F5F9; font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer;">Add item</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: grid; grid-template-columns: 1fr 72px 110px 36px; gap: 8px; font-size: 12px; color: #A9B1C3; padding: 0 2px;">
+            <div>Description</div><div>Qty</div><div>Unit price</div><div></div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 72px 110px 36px; gap: 8px; align-items: center;">
+            <input type="text" value="Brand identity design" aria-label="Item 1 description" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+            <input type="text" value="1" aria-label="Item 1 quantity" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px; text-align: right;">
+            <input type="text" value="1,800.00" aria-label="Item 1 unit price" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px; text-align: right;">
+            <button type="button" aria-label="Remove item 1" style="width: 36px; height: 44px; border-radius: 8px; border: 0; background: transparent; color: #A9B1C3; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 72px 110px 36px; gap: 8px; align-items: center;">
+            <input type="text" value="Landing page build" aria-label="Item 2 description" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+            <input type="text" value="1" aria-label="Item 2 quantity" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px; text-align: right;">
+            <input type="text" value="2,400.00" aria-label="Item 2 unit price" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px; text-align: right;">
+            <button type="button" aria-label="Remove item 2" style="width: 36px; height: 44px; border-radius: 8px; border: 0; background: transparent; color: #A9B1C3; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 72px 110px 36px; gap: 8px; align-items: center;">
+            <input type="text" value="Hosting setup" aria-label="Item 3 description" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+            <input type="text" value="2" aria-label="Item 3 quantity" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px; text-align: right;">
+            <input type="text" value="150.00" aria-label="Item 3 unit price" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px; text-align: right;">
+            <button type="button" aria-label="Remove item 3" style="width: 36px; height: 44px; border-radius: 8px; border: 0; background: transparent; color: #A9B1C3; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Tax
+          <select style="height: 44px; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;"><option>Sales tax 17% (Pakistan)</option><option>VAT 5% (UAE)</option><option>VAT 20% (UK)</option><option>None</option></select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Discount
+          <input type="text" placeholder="0" style="height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;">
+        </label>
+      </div>
+
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A9B1C3;">Notes
+        <textarea rows="2" style="box-sizing: border-box; padding: 10px 12px; border-radius: 8px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px; resize: none;">Payment due within 14 days. Thank you.</textarea>
+      </label>
+
+      <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #A9B1C3;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Saved in this browser only. Nothing is sent to a server.
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div style="box-sizing: border-box; padding: 40px 56px; display: flex; flex-direction: column; align-items: center; gap: 20px; background: #0B0F19; overflow: hidden;">
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #A9B1C3;">
+        <span>Live preview</span>
+        <span>A4, 1 page</span>
+      </div>
+      <div style="width: 620px; height: 876px; box-sizing: border-box; padding: 56px; background: #FFFFFF; color: #151A28; border-radius: 4px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 32px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 40px; letter-spacing: -0.02em;">Invoice</div>
+            <div style="font-size: 14px; color: #66708A;">No. 0042 &nbsp; Issued 28 Sep 2026</div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+            <div style="width: 52px; height: 52px; border-radius: 8px; background: {{accent}};"></div>
+            <div style="font-weight: 600; font-size: 14px;">Meridian Studio</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; font-size: 14px; line-height: 1.5;">
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="color: #66708A;">From</div>
+            <div style="font-weight: 600;">Meridian Studio</div>
+            <div style="color: #66708A;">[Your address]</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="color: #66708A;">Bill to</div>
+            <div style="font-weight: 600;">Northwind Traders</div>
+            <div style="color: #66708A;">Due 12 Oct 2026</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; font-size: 14px; border-top: 2px solid #151A28;">
+          <div style="display: grid; grid-template-columns: 1fr 70px 110px 120px; gap: 12px; padding: 12px 0; color: #66708A; border-bottom: 1px solid #E6E8EF;">
+            <div>Description</div><div style="text-align: right;">Qty</div><div style="text-align: right;">Unit price</div><div style="text-align: right;">Amount</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 70px 110px 120px; gap: 12px; padding: 14px 0; border-bottom: 1px solid #E6E8EF; font-variant-numeric: tabular-nums;">
+            <div>Brand identity design</div><div style="text-align: right;">1</div><div style="text-align: right;">1,800.00</div><div style="text-align: right;">1,800.00</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 70px 110px 120px; gap: 12px; padding: 14px 0; border-bottom: 1px solid #E6E8EF; font-variant-numeric: tabular-nums;">
+            <div>Landing page build</div><div style="text-align: right;">1</div><div style="text-align: right;">2,400.00</div><div style="text-align: right;">2,400.00</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 70px 110px 120px; gap: 12px; padding: 14px 0; border-bottom: 1px solid #E6E8EF; font-variant-numeric: tabular-nums;">
+            <div>Hosting setup</div><div style="text-align: right;">2</div><div style="text-align: right;">150.00</div><div style="text-align: right;">300.00</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-self: flex-end; width: 280px; font-size: 14px; font-variant-numeric: tabular-nums;">
+          <div style="display: flex; justify-content: space-between; color: #66708A;"><span>Subtotal</span><span>PKR 4,500.00</span></div>
+          <div style="display: flex; justify-content: space-between; color: #66708A;"><span>Sales tax 17%</span><span>PKR 765.00</span></div>
+          <div style="display: flex; justify-content: space-between; padding-top: 12px; border-top: 2px solid #151A28; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 24px;"><span>Total</span><span>PKR 5,265.00</span></div>
+        </div>
+        <div style="margin-top: auto; display: flex; justify-content: space-between; font-size: 13px; color: #66708A;">
+          <span>Payment due within 14 days. Thank you.</span>
+          <span>Page 1 of 1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFB020","options":["#FFB020","#FF7A45","#5EEAD4","#A78BFA"]},"$preview":{"width":1440,"height":1160}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FFB020' };
+  }
+}
+</script>
+</body>
+</html>

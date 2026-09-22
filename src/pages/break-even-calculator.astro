@@ -1,0 +1,75 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import Calculator from '~/components/tool/Calculator.astro';
+import FormulaBlock from '~/components/tool/FormulaBlock.astro';
+
+const faqs = [
+  {
+    q: 'What counts as a fixed cost?',
+    a: 'Anything you pay whether you sell one unit or a thousand: rent, salaries, software, insurance, accounting. Costs that rise with each sale — materials, packaging, payment fees — are variable costs instead.',
+  },
+  {
+    q: 'I sell services, not products. Does this still work?',
+    a: 'Yes. Swap units for billable days, hours or retained clients. Your variable cost is whatever each one costs you to deliver, including any subcontractors.',
+  },
+  {
+    q: 'My break-even looks impossibly high. What now?',
+    a: 'It is almost always a thin contribution per unit rather than the fixed costs. Raising the price a little moves break-even more than cutting overheads by the same amount.',
+  },
+];
+---
+
+<ToolLayout
+  href="/break-even-calculator"
+  title="Break-even calculator — how many units before you profit"
+  description="Enter fixed costs, price and variable cost per unit to find your break-even point, contribution margin and profit at a given volume. Free and instant."
+  heading="Break-even calculator"
+  standfirst="Enter your fixed costs, your price and what each sale costs you. Get the number you need to sell before you stop losing money."
+  faqs={faqs}
+  related={[
+    '/profit-margin-calculator',
+    '/markup-calculator',
+    '/freelance-rate-calculator',
+    '/vat-calculator',
+    '/invoice-generator',
+  ]}
+>
+  <Calculator
+    slot="calculator"
+    calc="break-even"
+    fields={[
+      { name: 'fixed', label: 'Fixed costs a month', value: '120,000' },
+      { name: 'price', label: 'Price per unit', value: '1,800' },
+      { name: 'variable', label: 'Variable cost per unit', value: '1,200' },
+      { name: 'expected', label: 'Units sold a month (optional)', value: '250' },
+    ]}
+    primaryLabel="Break-even units"
+    statLabels={[
+      'Revenue at break-even',
+      'Contribution per unit',
+      'Contribution margin',
+      'Profit at that volume',
+    ]}
+  />
+
+  <h2>The number that tells you if the month works</h2>
+  <p>
+    Every sale contributes something towards your fixed costs. That contribution is the price minus
+    what the sale itself cost you. Break-even is simply the point where those contributions have
+    covered the fixed costs completely — every unit after that is profit.
+  </p>
+
+  <FormulaBlock
+    rows={[
+      { label: 'Contribution', formula: 'Price − Variable cost' },
+      { label: 'Break-even', formula: 'Fixed costs ÷ Contribution' },
+    ]}
+  />
+
+  <h3>A worked example</h3>
+  <p>
+    Your fixed costs are 120,000 a month. Each unit sells for 1,800 and costs 1,200 to make, so each
+    one contributes 600. You need 200 units a month to cover the fixed costs, which is 360,000 of
+    revenue. Sell 250 and the extra 50 units are worth 30,000 in profit.
+  </p>
+</ToolLayout>

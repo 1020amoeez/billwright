@@ -1,0 +1,66 @@
+---
+import ToolCard from './ToolCard.astro';
+import { homepageTools } from '~/data/tools';
+---
+
+<section class="tools shell">
+  <div class="tools__head">
+    <h2>Every tool a small business needs. None of the signups.</h2>
+    <a class="tools__all" href="/calculators">See all tools</a>
+  </div>
+  <div class="tools__grid">
+    {homepageTools.map((tool) => <ToolCard tool={tool} />)}
+  </div>
+</section>
+
+<style>
+  .tools {
+    padding-block: 40px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .tools__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 640px;
+  }
+
+  .tools__all {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .tools__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1000px) {
+    .tools__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    h2 { font-size: 36px; }
+  }
+
+  @media (max-width: 900px) {
+    .tools { padding-block: 24px 72px; gap: 32px; }
+  }
+
+  @media (max-width: 640px) {
+    .tools__grid { grid-template-columns: 1fr; }
+    .tools__head { flex-direction: column; align-items: flex-start; gap: 16px; }
+    h2 { font-size: 30px; }
+  }
+</style>

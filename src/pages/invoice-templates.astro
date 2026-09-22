@@ -1,0 +1,181 @@
+---
+import SiteLayout from '~/layouts/SiteLayout.astro';
+import TemplateCard from '~/components/templates/TemplateCard.astro';
+import { templates, professions, templateCountries, formats } from '~/data/templates';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Invoice templates',
+    url: 'https://billwright.pages.dev/invoice-templates',
+    description:
+      'Six free invoice templates for freelancers, contractors and small businesses. Pick a layout and fill it in the generator.',
+  },
+];
+---
+
+<SiteLayout
+  title="Free invoice templates — six layouts you can fill in and download"
+  description="Pick from six free invoice templates, fill them in the generator and download a PDF. Built for freelancers, contractors and small businesses."
+  jsonLd={jsonLd}
+>
+  <section class="intro shell">
+    <div class="intro__copy">
+      <h1>Invoice templates</h1>
+      <p>
+        Pick a layout, then fill it in the generator. Every template exports to PDF, and Word and
+        Excel versions are available if you'd rather edit offline.
+      </p>
+    </div>
+
+    <div class="filters">
+      <label class="filters__field">
+        Profession
+        <select id="filter-profession">
+          {professions.map((p) => <option value={p}>{p}</option>)}
+        </select>
+      </label>
+      <label class="filters__field">
+        Country
+        <select id="filter-country">
+          {templateCountries.map((c) => <option value={c}>{c}</option>)}
+        </select>
+      </label>
+      <label class="filters__field">
+        Format
+        <select id="filter-format">
+          {formats.map((f) => <option value={f}>{f}</option>)}
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="gallery shell" id="gallery">
+    {templates.map((t) => <TemplateCard template={t} />)}
+    <p class="gallery__empty" id="gallery-empty" hidden>
+      No template matches that combination yet. Try a different format or country.
+    </p>
+  </section>
+</SiteLayout>
+
+<style>
+  .intro {
+    padding-block: 72px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .intro__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 760px;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  .intro__copy p {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .filters {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .filters__field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .filters__field select {
+    height: 44px;
+    padding: 0 14px;
+    border-radius: var(--r-input-lg);
+    border: 1px solid var(--border-strong);
+    background-color: var(--panel);
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .gallery {
+    padding-block: 16px 80px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .gallery__empty {
+    grid-column: 1 / -1;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 17px;
+  }
+
+  @media (max-width: 1100px) {
+    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    h1 { font-size: 44px; }
+  }
+
+  @media (max-width: 900px) {
+    .intro { padding-block: 48px 32px; }
+    h1 { font-size: 38px; }
+  }
+
+  @media (max-width: 700px) {
+    .gallery { grid-template-columns: 1fr; }
+    .filters { flex-direction: column; align-items: stretch; }
+    .filters__field { justify-content: space-between; }
+    .filters__field select { flex: 1; margin-left: 12px; min-width: 0; }
+  }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 32px; letter-spacing: -0.02em; }
+  }
+</style>
+
+<script>
+  const gallery = document.querySelector<HTMLElement>('#gallery');
+  const empty = document.querySelector<HTMLElement>('#gallery-empty');
+  const selects = ['profession', 'country', 'format'].map((name) =>
+    document.querySelector<HTMLSelectElement>(`#filter-${name}`),
+  );
+
+  function apply() {
+    if (!gallery) return;
+    const [profession, country, format] = selects.map((s) => s?.value ?? '');
+    let shown = 0;
+
+    gallery.querySelectorAll<HTMLElement>('.tpl').forEach((card) => {
+      const has = (key: string, value: string, anyValue: string) =>
+        value === anyValue || (card.dataset[key] ?? '').split('|').includes(value);
+
+      const match =
+        has('professions', profession, 'All') &&
+        has('countries', country, 'Any') &&
+        has('formats', format, '');
+
+      card.hidden = !match;
+      if (match) shown += 1;
+    });
+
+    if (empty) empty.hidden = shown > 0;
+  }
+
+  selects.forEach((s) => s?.addEventListener('change', apply));
+  apply();
+</script>

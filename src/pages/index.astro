@@ -1,0 +1,32 @@
+---
+import SiteLayout from '~/layouts/SiteLayout.astro';
+import Hero from '~/components/home/Hero.astro';
+import ToolGrid from '~/components/home/ToolGrid.astro';
+import CountryStrip from '~/components/home/CountryStrip.astro';
+import HowItWorks from '~/components/home/HowItWorks.astro';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Billwright',
+    url: 'https://billwright.pages.dev/',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    description:
+      'Free invoice generator, quotation and receipt makers, and small-business calculators. Runs entirely in your browser, no account needed.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+
+<SiteLayout
+  title="Billwright — free invoice generator and small business tools"
+  description="Make an invoice, quotation or receipt and download the PDF in under a minute. Free, no account, and everything runs in your browser."
+  jsonLd={jsonLd}
+>
+  <Hero />
+  <ToolGrid />
+  <CountryStrip />
+  <HowItWorks />
+</SiteLayout>

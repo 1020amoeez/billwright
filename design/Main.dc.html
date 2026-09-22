@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Billwright homepage</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;background:#101522;color:#F3F5F9}
+a{color:#F3F5F9;text-decoration:none}a:hover{color:#FFB020}
+</style>
+</helmet>
+<div style="width: 1440px; height: 2260px; box-sizing: border-box; background: #101522; color: #F3F5F9; display: flex; flex-direction: column; font-family: 'IBM Plex Sans', system-ui, sans-serif; overflow: hidden;">
+
+  <!-- Nav -->
+  <header style="height: 80px; box-sizing: border-box; padding: 0 120px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1F2738;">
+    <a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em;">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M4 3h15l7 7v17H4z" fill="{{accent}}"/><path d="M19 3v7h7" fill="#101522" opacity="0.35"/><path d="M9 15h12M9 20h8" stroke="#101522" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Billwright
+    </a>
+    <nav style="display: flex; gap: 36px; font-size: 15px; font-weight: 500;">
+      <a href="Generator.dc.html">Invoice generator</a>
+      <a href="Templates.dc.html">Templates</a>
+      <a href="Tool.dc.html">Calculators</a>
+      <a href="#guides">Guides</a>
+    </nav>
+    <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 15px;">Make an invoice</a>
+  </header>
+
+  <!-- Hero -->
+  <section style="box-sizing: border-box; padding: 112px 120px 96px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 80px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 28px;">
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 72px; line-height: 1.02; letter-spacing: -0.03em;">Send a proper invoice in under a minute.</h1>
+      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #A9B1C3; max-width: 520px;">Fill in the details, watch the PDF build itself, download it. No account, no watermark, no email required.</p>
+      <div style="display: flex; gap: 14px; align-items: center;">
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 54px; padding: 0 26px; border-radius: 12px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 17px;">Make an invoice</a>
+        <a href="Templates.dc.html" style="display: inline-flex; align-items: center; height: 54px; padding: 0 26px; border-radius: 12px; border: 1px solid #3A4459; color: #F3F5F9; font-weight: 500; font-size: 17px;">Browse templates</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #A9B1C3;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Everything runs in your browser. Your numbers never leave your device.
+      </div>
+    </div>
+
+    <!-- Paper preview -->
+    <div style="display: flex; justify-content: flex-end; padding-right: 24px;">
+      <div style="width: 480px; height: 620px; box-sizing: border-box; padding: 44px 44px 40px; background: #FFFFFF; color: #151A28; border-radius: 6px; transform: rotate(-2deg); box-shadow: 0 40px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 34px; letter-spacing: -0.02em;">Invoice</div>
+            <div style="font-size: 13px; color: #66708A;">No. 0042</div>
+          </div>
+          <div style="width: 44px; height: 44px; border-radius: 8px; background: {{accent}};"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; font-size: 13px; line-height: 1.5;">
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="color: #66708A;">From</div>
+            <div style="font-weight: 600;">[Your business]</div>
+            <div style="color: #66708A;">[Your address]</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="color: #66708A;">Bill to</div>
+            <div style="font-weight: 600;">[Client name]</div>
+            <div style="color: #66708A;">Due 12 Oct 2026</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; font-size: 13px; border-top: 2px solid #151A28;">
+          <div style="display: grid; grid-template-columns: 1fr 72px 96px; gap: 12px; padding: 10px 0; color: #66708A; border-bottom: 1px solid #E6E8EF;">
+            <div>Description</div><div style="text-align: right;">Qty</div><div style="text-align: right;">Amount</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 72px 96px; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E6E8EF;">
+            <div>Brand identity design</div><div style="text-align: right; font-variant-numeric: tabular-nums;">1</div><div style="text-align: right; font-variant-numeric: tabular-nums;">1,800.00</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 72px 96px; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E6E8EF;">
+            <div>Landing page build</div><div style="text-align: right; font-variant-numeric: tabular-nums;">1</div><div style="text-align: right; font-variant-numeric: tabular-nums;">2,400.00</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 72px 96px; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E6E8EF;">
+            <div>Hosting setup</div><div style="text-align: right; font-variant-numeric: tabular-nums;">2</div><div style="text-align: right; font-variant-numeric: tabular-nums;">300.00</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-self: flex-end; width: 240px; font-size: 13px;">
+          <div style="display: flex; justify-content: space-between; color: #66708A;"><span>Subtotal</span><span style="font-variant-numeric: tabular-nums;">4,500.00</span></div>
+          <div style="display: flex; justify-content: space-between; color: #66708A;"><span>Sales tax 17%</span><span style="font-variant-numeric: tabular-nums;">765.00</span></div>
+          <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 2px solid #151A28; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px;"><span>Total</span><span style="font-variant-numeric: tabular-nums;">5,265.00</span></div>
+        </div>
+        <div style="margin-top: auto; font-size: 12px; color: #66708A;">Payment due within 14 days. Thank you.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools -->
+  <section style="box-sizing: border-box; padding: 40px 120px 96px; display: flex; flex-direction: column; gap: 40px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 40px;">
+      <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; max-width: 640px;">Every tool a small business needs. None of the signups.</h2>
+      <a href="Tool.dc.html" style="font-size: 16px; font-weight: 500; color: {{accent}}; white-space: nowrap;">See all tools</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+      <a href="Generator.dc.html" style="display: flex; flex-direction: column; gap: 18px; box-sizing: border-box; padding: 28px; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; color: #F3F5F9;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px;">Invoice generator</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #A9B1C3;">Line items, tax, discounts, your logo. Exports a clean PDF.</div>
+        </div>
+      </a>
+      <a href="Generator.dc.html" style="display: flex; flex-direction: column; gap: 18px; box-sizing: border-box; padding: 28px; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; color: #F3F5F9;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px;">Quotation maker</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #A9B1C3;">Send an estimate first, convert it to an invoice when the job is won.</div>
+        </div>
+      </a>
+      <a href="Generator.dc.html" style="display: flex; flex-direction: column; gap: 18px; box-sizing: border-box; padding: 28px; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; color: #F3F5F9;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-2-1.5L15 21l-2-1.5L11 21l-2-1.5L7 21l-2-1.5z"/><path d="M9 8h6M9 12h6"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px;">Receipt generator</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #A9B1C3;">Proof of payment for cash or bank transfer, in seconds.</div>
+        </div>
+      </a>
+      <a href="Tool.dc.html" style="display: flex; flex-direction: column; gap: 18px; box-sizing: border-box; padding: 28px; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; color: #F3F5F9;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px;">Profit margin calculator</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #A9B1C3;">Cost and price in, margin and markup out.</div>
+        </div>
+      </a>
+      <a href="Tool.dc.html" style="display: flex; flex-direction: column; gap: 18px; box-sizing: border-box; padding: 28px; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; color: #F3F5F9;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M4 17 10 9l4 5 6-9"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px;">Break-even calculator</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #A9B1C3;">How many units, hours or clients before you stop losing money.</div>
+        </div>
+      </a>
+      <a href="Tool.dc.html" style="display: flex; flex-direction: column; gap: 18px; box-sizing: border-box; padding: 28px; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; color: #F3F5F9;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px;">Freelance rate calculator</div>
+          <div style="font-size: 15px; line-height: 1.5; color: #A9B1C3;">Work backwards from the income you want to the hourly rate you need.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Localized -->
+  <section style="box-sizing: border-box; margin: 0 120px; padding: 56px 64px; border-radius: 20px; background: #171D2C; border: 1px solid #2B3448; display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 36px; line-height: 1.1; letter-spacing: -0.02em;">Built for where you actually do business.</h2>
+      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: #A9B1C3;">Pick your country and the invoice picks up the right tax line, currency format and required fields. GST, VAT or sales tax, without you looking it up.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">Pakistan</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">United Arab Emirates</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">United Kingdom</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">India</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">Saudi Arabia</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">Australia</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">Canada</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px;">United States</span>
+      <span style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #3A4459; font-size: 15px; color: #A9B1C3;">and more</span>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section style="box-sizing: border-box; padding: 96px 120px 80px; display: flex; flex-direction: column; gap: 40px;">
+    <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 36px; letter-spacing: -0.02em;">Three steps, no third one is "create an account".</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 2px solid {{accent}};">
+        <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px;">1. Fill in the details</div>
+        <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #A9B1C3;">Your business, the client, what you did and what it costs. Saved locally so next time it's already there.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 2px solid #3A4459;">
+        <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px;">2. Watch it build</div>
+        <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #A9B1C3;">The invoice updates as you type. Switch template or currency and see it change instantly.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 2px solid #3A4459;">
+        <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px;">3. Download the PDF</div>
+        <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #A9B1C3;">One click. Send it however you like. Nothing is uploaded, nothing is stored on our side.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="margin-top: auto; box-sizing: border-box; padding: 40px 120px; border-top: 1px solid #1F2738; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #A9B1C3;">
+    <div>Billwright. Free tools for people who send invoices.</div>
+    <div style="display: flex; gap: 28px;">
+      <a href="#guides" style="color: #A9B1C3;">Guides</a>
+      <a href="#privacy" style="color: #A9B1C3;">Privacy</a>
+      <a href="#contact" style="color: #A9B1C3;">Contact</a>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFB020","options":["#FFB020","#FF7A45","#5EEAD4","#A78BFA"]},"$preview":{"width":1440,"height":2260}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FFB020' };
+  }
+}
+</script>
+</body>
+</html>

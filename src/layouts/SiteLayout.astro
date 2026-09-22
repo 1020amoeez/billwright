@@ -1,0 +1,29 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '~/components/chrome/SiteHeader.astro';
+import SiteFooter from '~/components/chrome/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: unknown[];
+}
+
+const { title, description, jsonLd } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd} bodyClass="site">
+  <SiteHeader />
+  <main id="main">
+    <slot />
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style is:global>
+  body.site {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

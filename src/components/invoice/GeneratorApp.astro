@@ -1,0 +1,384 @@
+---
+import AppHeader from '~/components/chrome/AppHeader.astro';
+import Icon from '~/components/ui/Icon.astro';
+import { taxOptions } from '~/data/countries';
+import { defaultState } from '~/scripts/defaults';
+import { computeTotals, type DocKind } from '~/scripts/store';
+import { renderPaper, copyFor } from '~/scripts/paper';
+import { renderItems } from '~/scripts/itemsView';
+
+interface Props {
+  kind: DocKind;
+}
+const { kind } = Astro.props;
+
+const state = defaultState(kind);
+const taxes = taxOptions();
+const initialTax = taxes.find((t) => t.value === state.tax);
+const totals = computeTotals(state, initialTax?.rate ?? 0);
+const paperHtml = renderPaper(state, totals, {
+  taxLabel: initialTax?.taxLabel ?? '',
+  taxRate: initialTax?.rate ?? 0,
+});
+const copy = copyFor[kind];
+const noun = copy.title.toLowerCase();
+---
+
+<div class="app" data-kind={kind}>
+  <AppHeader currency={state.currency} template={state.template} downloadLabel="Download PDF" />
+
+  {/* The design gives this screen no visible heading; it still needs one. */}
+  <h1 class="visually-hidden">{copy.title} generator</h1>
+
+  <div class="pane-tabs" role="tablist" aria-label="Editor view">
+    <button type="button" role="tab" id="tab-form" aria-controls="pane-form" aria-selected="true" class="pane-tabs__tab is-active">Form</button>
+    <button type="button" role="tab" id="tab-preview" aria-controls="pane-preview" aria-selected="false" class="pane-tabs__tab">Preview</button>
+  </div>
+
+  <div class="split" id="split" data-pane="form">
+    <!-- Form -->
+    <form class="form" id="pane-form" role="tabpanel" aria-labelledby="tab-form" novalidate>
+      <section class="form__section">
+        <h2>Your business</h2>
+        <div class="form__grid">
+          <label class="field">
+            Business name
+            <input type="text" data-field="businessName" value={state.businessName} />
+          </label>
+          <label class="field">
+            Email
+            <input type="email" data-field="businessEmail" placeholder="hello@yourbusiness.com" value={state.businessEmail} />
+          </label>
+        </div>
+        <label class="field">
+          Address
+          <input type="text" data-field="businessAddress" placeholder="Street, city, postcode" value={state.businessAddress} />
+        </label>
+      </section>
+
+      <section class="form__section">
+        <h2>Bill to</h2>
+        <div class="form__grid">
+          <label class="field">
+            Client name
+            <input type="text" data-field="clientName" value={state.clientName} />
+          </label>
+          <label class="field">
+            {copy.dueLabel === 'Due' ? 'Due date' : copy.dueLabel}
+            <input type="date" data-field="dueDate" value={state.dueDate} />
+          </label>
+        </div>
+        <div class="form__grid">
+          <label class="field">
+            {copy.title} number
+            <input type="text" data-field="number" value={state.number} />
+          </label>
+          <label class="field">
+            Issue date
+            <input type="date" data-field="issueDate" value={state.issueDate} />
+          </label>
+        </div>
+      </section>
+
+      <section class="form__section">
+        <div class="form__section-head">
+          <h2>Items</h2>
+          <button type="button" class="btn-outline form__add" data-action="add-item">Add item</button>
+        </div>
+        <div class="items">
+          <div class="items__head">
+            <div>Description</div>
+            <div>Qty</div>
+            <div>Unit price</div>
+            <div></div>
+          </div>
+          <div class="items__list" id="items-list" set:html={renderItems(state.items)} />
+        </div>
+      </section>
+
+      <div class="form__grid">
+        <label class="field">
+          Tax
+          <select data-field="tax">
+            {taxes.map((t) => <option value={t.value} selected={t.value === state.tax}>{t.label}</option>)}
+            <option value="custom">Other rate</option>
+            <option value="none">None</option>
+          </select>
+        </label>
+        <label class="field">
+          Discount
+          <input type="text" inputmode="decimal" data-field="discount" placeholder="0" value={state.discount} />
+        </label>
+      </div>
+
+      <label class="field" id="custom-rate-field" hidden>
+        Tax rate (%)
+        <input type="text" inputmode="decimal" data-field="taxRate" placeholder="e.g. 8.25" value={state.taxRate} />
+      </label>
+
+      <label class="field">
+        Notes
+        <textarea rows="2" data-field="notes">{state.notes}</textarea>
+      </label>
+
+      <div class="form__foot">
+        <p class="form__trust">
+          <Icon name="lock" size={16} stroke={2} />
+          Saved in this browser only. Nothing is sent to a server.
+        </p>
+        <button type="button" class="btn-outline form__reset" data-action="reset">Start a new {noun}</button>
+      </div>
+    </form>
+
+    <!-- Preview -->
+    <div class="preview" id="pane-preview" role="tabpanel" aria-labelledby="tab-preview">
+      <div class="preview__bar">
+        <span>Live preview</span>
+        <span id="page-count">A4, 1 page</span>
+      </div>
+      <div class="paper-stage" id="paper-stage">
+        <div class="paper-scaler" id="paper-scaler">
+          <div class={`paper paper--${state.template}`} id="paper" set:html={paperHtml} />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sr-status" role="status" aria-live="polite" id="status"></p>
+</div>
+
+<style>
+  .app {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .split {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 560px minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  /* Form */
+  .form {
+    padding: 32px var(--gutter-app) 40px;
+    border-right: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    overflow-y: auto;
+    max-height: calc(100vh - var(--header-app-h));
+  }
+
+  .form__section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .form h2 {
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .form__section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .form__add {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .items__head {
+    display: grid;
+    grid-template-columns: 1fr 72px 110px 36px;
+    gap: 8px;
+    padding: 0 2px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .items__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form__foot {
+    margin-top: auto;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form__trust {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .form__reset {
+    align-self: flex-start;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  /* Preview */
+  .preview {
+    padding: 40px 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg-deep);
+    overflow: hidden;
+  }
+
+  .preview__bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  /* Tabs — below 900px only, no 1440 equivalent in the design */
+  .pane-tabs {
+    display: none;
+    gap: 8px;
+    padding: 12px var(--gutter-app);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .pane-tabs__tab {
+    flex: 1;
+    height: 44px;
+    border-radius: var(--r-btn);
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .pane-tabs__tab.is-active {
+    background: var(--panel);
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  /* Toast, also the aria-live region. Empty until something happens. */
+  .sr-status {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 60;
+    margin: 0;
+    padding: 12px 18px;
+    border-radius: var(--r-btn);
+    background: var(--panel);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  .sr-status:empty {
+    display: none;
+  }
+
+  @media (max-width: 1200px) {
+    .split { grid-template-columns: 480px minmax(0, 1fr); }
+    .preview { padding: 32px 32px; }
+  }
+
+  @media (max-width: 900px) {
+    .pane-tabs { display: flex; }
+    .split { grid-template-columns: 1fr; }
+    .form {
+      border-right: 0;
+      max-height: none;
+      overflow: visible;
+      padding-top: 24px;
+    }
+    .preview { padding: 24px 16px 40px; }
+    /* The design's 36/40px controls come up to the 44px touch target here. */
+    .form__add,
+    .form__reset { height: 44px; }
+    .split[data-pane='form'] .preview { display: none; }
+    .split[data-pane='preview'] .form { display: none; }
+  }
+</style>
+
+<style is:global>
+  /* Line-item rows are re-rendered at runtime, so these cannot be scoped. */
+  .item-row {
+    display: grid;
+    grid-template-columns: 1fr 72px 110px 36px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .item-row input {
+    height: 44px;
+    padding: 0 12px;
+    border-radius: var(--r-input);
+    border: 1px solid var(--border-strong);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 15px;
+    min-width: 0;
+  }
+
+  .item-row input:hover { border-color: #4A556E; }
+
+  .item-row__num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .item-row button {
+    width: 36px;
+    height: 44px;
+    border: 0;
+    border-radius: var(--r-input);
+    background: transparent;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .item-row button:hover { color: var(--accent); }
+</style>
+
+<script>
+  import { initGenerator } from '~/scripts/generator';
+  initGenerator();
+</script>

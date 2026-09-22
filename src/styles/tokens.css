@@ -1,0 +1,61 @@
+/* Billwright design tokens — see design/DESIGN.md */
+:root {
+  /* Surfaces */
+  --bg: #101522;
+  --bg-deep: #0B0F19;
+  --panel: #171D2C;
+  --border: #2B3448;
+  --border-strong: #3A4459;
+  --hairline: #1F2738;
+
+  /* Text */
+  --text: #F3F5F9;
+  --text-body: #C9CFDB;   /* long-form prose, from Tool.dc.html */
+  --text-muted: #A9B1C3;
+  --text-faint: #7E8698;  /* placeholder labels; lightened for 4.5:1 */
+
+  /* Accent */
+  --accent: #FFB020;
+  --accent-ink: #101522;  /* text on accent, never white */
+
+  /* Paper */
+  --paper: #FFFFFF;
+  --paper-ink: #151A28;
+  --paper-muted: #66708A;
+  --paper-line: #E6E8EF;
+  --paper-fill: #D9DCE5;  /* mini-preview bars */
+  --paper-fill-2: #EEF0F5;
+  --paper-fill-3: #F7F8FB;
+
+  /* Type */
+  --font-display: 'Bricolage Grotesque', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Radius */
+  --r-input: 8px;
+  --r-input-lg: 10px;
+  --r-btn: 10px;
+  --r-btn-lg: 12px;
+  --r-card: 14px;
+  --r-section: 18px;
+  --r-section-lg: 20px;
+  --r-paper: 4px;
+  --r-pill: 999px;
+
+  /* Layout */
+  --gutter: 120px;
+  --gutter-app: 40px;
+  --header-h: 80px;
+  --header-app-h: 72px;
+
+  /* Elevation — paper only */
+  --shadow-paper-hero: 0 40px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-paper: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 1100px) {
+  :root { --gutter: 48px; }
+}
+@media (max-width: 720px) {
+  :root { --gutter: 20px; --gutter-app: 16px; }
+}

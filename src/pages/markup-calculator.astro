@@ -1,0 +1,70 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import Calculator from '~/components/tool/Calculator.astro';
+import FormulaBlock from '~/components/tool/FormulaBlock.astro';
+
+const faqs = [
+  {
+    q: 'Is markup the same as margin?',
+    a: 'No, and the gap widens as the numbers grow. Markup is measured against your cost, margin against your selling price. A 50% markup is a 33.3% margin; a 100% markup is a 50% margin.',
+  },
+  {
+    q: 'What markup should I use?',
+    a: 'Work backwards from the margin you need to cover overheads and still make a profit, then convert it to a markup. Retail often lands between 50% and 100%, but your costs decide, not a rule of thumb.',
+  },
+  {
+    q: 'Should markup go on top of tax?',
+    a: 'No. Mark up the cost before tax, then add VAT, GST or sales tax to the final price. Marking up a tax-inclusive cost quietly inflates your price.',
+  },
+];
+---
+
+<ToolLayout
+  href="/markup-calculator"
+  title="Markup calculator — set your price from cost and markup"
+  description="Enter your cost and the markup you want to add to get the selling price, the margin it leaves you and the profit per unit. Free and instant."
+  heading="Markup calculator"
+  standfirst="Enter what something costs you and the markup you want to add. Get the price to charge and the margin it leaves you."
+  faqs={faqs}
+  related={[
+    '/profit-margin-calculator',
+    '/break-even-calculator',
+    '/vat-calculator',
+    '/freelance-rate-calculator',
+    '/invoice-generator',
+  ]}
+>
+  <Calculator
+    slot="calculator"
+    calc="markup"
+    fields={[
+      { name: 'cost', label: 'Cost per unit', value: '1,200' },
+      { name: 'markup', label: 'Markup (%)', value: '50' },
+      { name: 'units', label: 'Units sold (optional)', value: '40' },
+    ]}
+    primaryLabel="Selling price"
+    statLabels={['Profit margin', 'Profit per unit', 'Total revenue', 'Total profit']}
+  />
+
+  <h2>Pricing up from cost</h2>
+  <p>
+    Markup is the percentage you add to what something cost you. It is the easiest way to price
+    because you already know your cost. The catch is that the margin it leaves you is always smaller
+    than the markup, so a quote agreed in markup terms and reported in margin terms will look worse
+    than you expected.
+  </p>
+
+  <FormulaBlock
+    rows={[
+      { label: 'Price', formula: 'Cost × (1 + Markup ÷ 100)' },
+      { label: 'Margin', formula: 'Markup ÷ (100 + Markup) × 100' },
+    ]}
+  />
+
+  <h3>A worked example</h3>
+  <p>
+    A part costs you 1,200. A 50% markup adds 600, so you charge 1,800. That 600 is half your cost
+    but only a third of your price, which is why the margin comes out at 33.3%. If you need a 40%
+    margin instead, you need a 66.7% markup.
+  </p>
+</ToolLayout>

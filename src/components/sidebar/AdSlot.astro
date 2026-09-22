@@ -1,0 +1,32 @@
+---
+/**
+ * Placeholder for a 300×250 display unit. The sidebar is 340px wide and the
+ * box is 280px tall, per Tool.dc.html; the unit itself sits centred inside.
+ */
+---
+
+<div class="ad-slot">
+  <div class="ad-slot__unit">Ad slot 300×250</div>
+</div>
+
+<style>
+  .ad-slot {
+    height: 280px;
+    border-radius: var(--r-card);
+    border: 1px dashed var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ad-slot__unit {
+    width: 300px;
+    max-width: 100%;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+import Seo from '~/components/seo/Seo.astro';
+import '~/styles/fonts.css';
+import '~/styles/tokens.css';
+import '~/styles/base.css';
+import '~/styles/buttons.css';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: unknown[];
+  noindex?: boolean;
+  bodyClass?: string;
+}
+
+const { title, description, jsonLd, noindex, bodyClass } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101522" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/bricolage-grotesque-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <Seo title={title} description={description} jsonLd={jsonLd} noindex={noindex} />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

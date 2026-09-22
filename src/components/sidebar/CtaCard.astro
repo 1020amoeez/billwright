@@ -1,0 +1,61 @@
+---
+interface Props {
+  title?: string;
+  body?: string;
+  cta?: string;
+  href?: string;
+}
+
+const {
+  title = 'Priced it? Now invoice it.',
+  body = 'Turn these numbers into a PDF invoice in a minute. Free, no account.',
+  cta = 'Open the invoice generator',
+  href = '/invoice-generator',
+} = Astro.props;
+---
+
+<div class="cta-card">
+  <p class="cta-card__title">{title}</p>
+  <p class="cta-card__body">{body}</p>
+  <a class="cta-card__btn" href={href}>{cta}</a>
+</div>
+
+<style>
+  .cta-card {
+    padding: 24px;
+    border-radius: var(--r-card);
+    background: var(--accent);
+    color: var(--accent-ink);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cta-card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.15;
+  }
+
+  .cta-card__body {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .cta-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    border-radius: var(--r-btn);
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .cta-card__btn:hover {
+    color: var(--accent);
+  }
+</style>

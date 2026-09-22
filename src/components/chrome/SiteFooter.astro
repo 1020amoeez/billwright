@@ -1,0 +1,54 @@
+---
+const links = [
+  { href: '/guides', label: 'Guides' },
+  { href: '/privacy', label: 'Privacy' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner shell">
+    <p>Billwright. Free tools for people who send invoices.</p>
+    <nav class="site-footer__links" aria-label="Footer">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .site-footer__inner {
+    padding-block: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .site-footer__links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .site-footer__links a {
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 720px) {
+    .site-footer__inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .site-footer__links {
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+  }
+</style>

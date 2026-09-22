@@ -1,0 +1,55 @@
+---
+interface Props {
+  rows: { label: string; formula: string }[];
+}
+const { rows } = Astro.props;
+---
+
+<div class="formula">
+  {
+    rows.map((r) => (
+      <div class="formula__row">
+        <span class="formula__label">{r.label}</span>
+        <span class="formula__body">{r.formula}</span>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .formula {
+    padding: 24px 28px;
+    border-radius: 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 18px;
+    color: var(--text);
+  }
+
+  .formula__row {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  .formula__label {
+    width: 90px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+
+  .formula__body {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  @media (max-width: 520px) {
+    .formula { padding: 20px; font-size: 16px; }
+    .formula__row { flex-direction: column; gap: 4px; }
+    .formula__label { width: auto; }
+  }
+</style>

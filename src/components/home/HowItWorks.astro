@@ -1,0 +1,86 @@
+---
+const steps = [
+  {
+    title: '1. Fill in the details',
+    body: "Your business, the client, what you did and what it costs. Saved locally so next time it's already there.",
+  },
+  {
+    title: '2. Watch it build',
+    body: 'The invoice updates as you type. Switch template or currency and see it change instantly.',
+  },
+  {
+    title: '3. Download the PDF',
+    body: 'One click. Send it however you like. Nothing is uploaded, nothing is stored on our side.',
+  },
+];
+---
+
+<section class="steps shell">
+  <h2>Three steps, no third one is "create an account".</h2>
+  <ol class="steps__grid">
+    {
+      steps.map((s, i) => (
+        <li class:list={['step', { 'step--first': i === 0 }]}>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .steps {
+    padding-block: 96px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: -0.02em;
+  }
+
+  .steps__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 2px solid var(--border-strong);
+  }
+
+  .step--first { border-top-color: var(--accent); }
+
+  h3 {
+    font-weight: 700;
+    font-size: 28px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 900px) {
+    .steps { padding-block: 64px 64px; gap: 32px; }
+    .steps__grid { grid-template-columns: 1fr; gap: 28px; }
+    h2 { font-size: 30px; }
+    h3 { font-size: 24px; }
+  }
+
+  @media (max-width: 520px) {
+    h2 { font-size: 26px; }
+  }
+</style>

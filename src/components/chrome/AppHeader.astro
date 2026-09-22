@@ -1,0 +1,132 @@
+---
+import Logo from './Logo.astro';
+import Icon from '~/components/ui/Icon.astro';
+import { templates } from '~/data/templates';
+import { currencyCodes } from '~/data/countries';
+
+interface Props {
+  currency: string;
+  template: string;
+  downloadLabel: string;
+}
+const { currency, template, downloadLabel } = Astro.props;
+---
+
+<header class="app-header">
+  <a class="brand" href="/">
+    <Logo size={26} />
+    Billwright
+  </a>
+
+  <div class="app-header__controls">
+    <label class="inline-field">
+      Template
+      <select id="template-select">
+        {
+          templates.map((t) => (
+            <option value={t.id} selected={t.id === template}>
+              {t.name}
+            </option>
+          ))
+        }
+      </select>
+    </label>
+
+    <label class="inline-field">
+      Currency
+      <select id="currency-select">
+        {
+          currencyCodes.map((code) => (
+            <option value={code} selected={code === currency}>
+              {code}
+            </option>
+          ))
+        }
+      </select>
+    </label>
+
+    <button type="button" class="btn-accent app-header__download" id="download-pdf">
+      <Icon name="download" size={18} stroke={2.2} color="currentColor" />
+      {downloadLabel}
+    </button>
+  </div>
+</header>
+
+<style>
+  .app-header {
+    height: var(--header-app-h);
+    flex-shrink: 0;
+    padding-inline: var(--gutter-app);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .app-header__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .inline-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .inline-field select {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: var(--r-input);
+    border: 1px solid var(--border-strong);
+    background-color: var(--panel);
+    color: var(--text);
+    font-size: 14px;
+  }
+
+  .app-header__download {
+    height: 44px;
+    padding: 0 22px;
+  }
+
+  @media (max-width: 900px) {
+    .app-header {
+      height: auto;
+      padding-block: 12px;
+      flex-wrap: wrap;
+    }
+    .app-header__controls {
+      flex: 1 1 100%;
+      order: 3;
+      flex-wrap: wrap;
+    }
+    .inline-field {
+      flex: 1 1 140px;
+    }
+    .inline-field select {
+      flex: 1;
+      min-width: 0;
+      height: 44px;
+    }
+    .app-header__download {
+      flex: 1 1 100%;
+    }
+  }
+</style>

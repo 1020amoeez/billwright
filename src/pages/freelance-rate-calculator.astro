@@ -1,0 +1,71 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import Calculator from '~/components/tool/Calculator.astro';
+import FormulaBlock from '~/components/tool/FormulaBlock.astro';
+
+const faqs = [
+  {
+    q: 'How many hours can I actually bill?',
+    a: 'Most freelancers bill around 60% of a working week. The rest goes on pitching, admin, invoicing and the work that keeps the work coming. Putting 40 in this box is how people end up underpriced.',
+  },
+  {
+    q: 'Should I quote hourly or a fixed price?',
+    a: 'Quote fixed where you can — clients prefer it and you keep the gain when you work quickly. Use the hourly rate here as the floor you check every fixed quote against.',
+  },
+  {
+    q: 'Where do holidays and sick days go?',
+    a: 'In the weeks worked box. Forty-six weeks leaves room for a few weeks off and the odd bad week. Dropping it to 44 or 42 raises the rate you need accordingly.',
+  },
+];
+---
+
+<ToolLayout
+  href="/freelance-rate-calculator"
+  title="Freelance rate calculator — work out the hourly rate you need"
+  description="Start from the income you want and the hours you can really bill, and get the hourly rate, day rate and monthly target that reach it. Free and instant."
+  heading="Freelance rate calculator"
+  standfirst="Start from the income you want and the hours you can actually bill. Get the hourly rate that gets you there."
+  faqs={faqs}
+  related={[
+    '/profit-margin-calculator',
+    '/break-even-calculator',
+    '/markup-calculator',
+    '/vat-calculator',
+    '/invoice-generator',
+  ]}
+>
+  <Calculator
+    slot="calculator"
+    calc="freelance-rate"
+    fields={[
+      { name: 'income', label: 'Take-home income a year', value: '3,600,000' },
+      { name: 'costs', label: 'Business costs a year', value: '400,000' },
+      { name: 'hours', label: 'Billable hours a week', value: '25' },
+      { name: 'weeks', label: 'Weeks worked a year', value: '46' },
+    ]}
+    primaryLabel="Hourly rate"
+    statLabels={['Day rate (8 hours)', 'Monthly target', 'Billable hours a year', 'Weekly target']}
+  />
+
+  <h2>Why your rate is not your salary divided by 2,000</h2>
+  <p>
+    An employee is paid for every hour they are at work. You are paid only for the hours you can put
+    on an invoice, and you pay for your own software, hardware, insurance, pension and time off. Your
+    rate has to cover all of it out of a much smaller number of hours.
+  </p>
+
+  <FormulaBlock
+    rows={[
+      { label: 'Hourly', formula: '(Income + Costs) ÷ (Billable hours × Weeks)' },
+      { label: 'Day rate', formula: 'Hourly rate × 8' },
+    ]}
+  />
+
+  <h3>A worked example</h3>
+  <p>
+    You want 3,600,000 a year and your business costs 400,000 to run, so you need to bill 4,000,000.
+    At 25 billable hours a week over 46 weeks you have 1,150 hours to do it in, which puts your rate
+    just under 3,500 an hour. Bill 20 hours a week instead and the same income needs a rate above
+    4,300.
+  </p>
+</ToolLayout>

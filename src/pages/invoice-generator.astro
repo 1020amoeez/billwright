@@ -1,0 +1,24 @@
+---
+import AppLayout from '~/layouts/AppLayout.astro';
+import GeneratorApp from '~/components/invoice/GeneratorApp.astro';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Billwright invoice generator',
+    url: 'https://billwright.pages.dev/invoice-generator',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+
+<AppLayout
+  title="Free invoice generator — make an invoice and download the PDF"
+  description="Fill in your details and download a clean PDF invoice. Free, no account, and everything stays in your browser."
+  jsonLd={jsonLd}
+>
+  <GeneratorApp kind="invoice" />
+</AppLayout>

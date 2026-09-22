@@ -1,0 +1,44 @@
+/* Long-form explainer, shared by every tool page. */
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 680px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-body);
+}
+
+.prose h2 {
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.prose h3 {
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--text);
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (max-width: 520px) {
+  .prose { font-size: 16px; gap: 22px; }
+  .prose h2 { font-size: 26px; }
+  .prose h3 { font-size: 21px; }
+}

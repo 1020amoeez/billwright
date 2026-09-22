@@ -1,0 +1,45 @@
+---
+import type { Tool } from '~/data/tools';
+
+interface Props {
+  tools: Tool[];
+}
+const { tools } = Astro.props;
+---
+
+<nav class="related" aria-label="Related tools">
+  <h2 class="related__title">Related tools</h2>
+  {tools.map((t) => <a class="related__link" href={t.href}>{t.name}</a>)}
+</nav>
+
+<style>
+  .related {
+    padding: 24px;
+    border-radius: var(--r-card);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .related__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .related__link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+  }
+
+  .related__link:last-child {
+    border-bottom: 0;
+  }
+</style>

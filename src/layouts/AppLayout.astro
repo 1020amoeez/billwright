@@ -1,0 +1,17 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import '~/styles/paper.css';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: unknown[];
+}
+const { title, description, jsonLd } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <main id="main">
+    <slot />
+  </main>
+</BaseLayout>

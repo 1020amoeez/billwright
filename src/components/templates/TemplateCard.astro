@@ -1,0 +1,92 @@
+---
+import TemplateMini from './TemplateMini.astro';
+import type { Template } from '~/data/templates';
+
+interface Props {
+  template: Template;
+}
+const { template } = Astro.props;
+---
+
+<article
+  class="tpl"
+  data-template={template.id}
+  data-professions={template.professions.join('|')}
+  data-countries={template.countries.join('|')}
+  data-formats={template.formats.join('|')}
+>
+  <div class="tpl__stage">
+    <TemplateMini id={template.id} />
+  </div>
+  <div class="tpl__foot">
+    <div class="tpl__text">
+      <h2 class="tpl__name">{template.name}</h2>
+      <p class="tpl__blurb">{template.blurb}</p>
+    </div>
+    <a class="btn-accent tpl__use" href={`/invoice-generator?template=${template.id}`}>
+      Use template
+    </a>
+  </div>
+</article>
+
+<style>
+  .tpl {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--r-card);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .tpl[hidden] { display: none; }
+
+  .tpl__stage {
+    height: 300px;
+    padding: 28px 28px 0;
+    background: var(--bg-deep);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .tpl__foot {
+    padding: 20px 24px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .tpl__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tpl__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .tpl__blurb {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .tpl__use {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 900px) {
+    .tpl__use { height: 44px; }
+  }
+
+  @media (max-width: 420px) {
+    .tpl__foot { flex-direction: column; align-items: stretch; }
+    .tpl__use { width: 100%; }
+  }
+</style>

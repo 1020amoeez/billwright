@@ -1,0 +1,111 @@
+---
+import SiteLayout from '~/layouts/SiteLayout.astro';
+import ToolCard from '~/components/home/ToolCard.astro';
+import { tools } from '~/data/tools';
+
+const documents = tools.filter((t) => t.kind === 'document');
+const calculators = tools.filter((t) => t.kind === 'calculator');
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Billwright tools',
+    url: 'https://billwright.pages.dev/calculators',
+    description: 'Free invoicing tools and small-business calculators, all running in your browser.',
+  },
+];
+---
+
+<SiteLayout
+  title="Free small business calculators and invoicing tools"
+  description="Profit margin, markup, break-even, freelance rate and VAT calculators, plus free invoice, quotation and receipt makers. No account, no uploads."
+  jsonLd={jsonLd}
+>
+  <section class="index shell">
+    <div class="index__copy">
+      <h1>All the tools</h1>
+      <p>
+        Every one of these runs in your browser. Nothing is uploaded, nothing needs an account, and
+        your numbers stay on your device.
+      </p>
+    </div>
+
+    <div class="index__group">
+      <h2>Calculators</h2>
+      <div class="index__grid">
+        {calculators.map((tool) => <ToolCard tool={tool} />)}
+      </div>
+    </div>
+
+    <div class="index__group">
+      <h2>Documents</h2>
+      <div class="index__grid">
+        {documents.map((tool) => <ToolCard tool={tool} />)}
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .index {
+    padding-block: 72px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .index__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 700px;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  .index__copy p {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .index__group {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  .index__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 1000px) {
+    .index__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    h1 { font-size: 44px; }
+  }
+
+  @media (max-width: 900px) {
+    .index { padding-block: 48px 72px; gap: 44px; }
+    h1 { font-size: 38px; }
+  }
+
+  @media (max-width: 640px) {
+    .index__grid { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; letter-spacing: -0.02em; }
+    h2 { font-size: 26px; }
+  }
+</style>

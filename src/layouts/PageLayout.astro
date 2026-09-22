@@ -1,0 +1,65 @@
+---
+import SiteLayout from './SiteLayout.astro';
+import '~/styles/prose.css';
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  standfirst?: string;
+  jsonLd?: unknown[];
+}
+
+const { title, description, heading, standfirst, jsonLd } = Astro.props;
+---
+
+<SiteLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class="page shell">
+    <div class="page__head">
+      <h1>{heading}</h1>
+      {standfirst && <p class="page__standfirst">{standfirst}</p>}
+    </div>
+    <article class="prose">
+      <slot />
+    </article>
+  </div>
+</SiteLayout>
+
+<style>
+  .page {
+    padding-block: 72px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .page__head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 760px;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  .page__standfirst {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    max-width: 640px;
+  }
+
+  @media (max-width: 900px) {
+    .page { padding-block: 48px 72px; gap: 32px; }
+    h1 { font-size: 38px; }
+  }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 32px; letter-spacing: -0.02em; }
+  }
+</style>

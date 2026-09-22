@@ -1,0 +1,45 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="Privacy — what Billwright does and does not collect"
+  description="Billwright runs entirely in your browser. No accounts, no analytics, no uploads and no third-party requests. Here is exactly what is stored and where."
+  heading="Privacy"
+  standfirst="Short version: your invoice never leaves your device, and there is nothing here to log you into."
+>
+  <h2>What we collect</h2>
+  <p>
+    Nothing. There is no account system, no sign-up form, no analytics script and no tracking
+    pixel. We do not have a server that receives what you type, so there is no copy of your invoice
+    on our side to lose, sell or hand over.
+  </p>
+
+  <h2>What your browser stores</h2>
+  <p>
+    The generator and the calculators save what you have typed to your browser's local storage so
+    the page is still filled in when you come back. That data stays on your device, is readable only
+    by this site in this browser, and is never transmitted. Clearing your browser's site data removes
+    it, and so does the "Start a new invoice" button.
+  </p>
+
+  <h2>Where the PDF is made</h2>
+  <p>
+    In the tab you are looking at. The PDF is assembled by JavaScript running on your machine and
+    saved straight to your downloads folder. It is not generated on a server, so it is never
+    transmitted anywhere.
+  </p>
+
+  <h2>Requests that leave your browser</h2>
+  <p>
+    None, beyond the site itself. The two fonts are served from this domain rather than from Google
+    Fonts, so no third party sees your IP address when a page loads.
+  </p>
+
+  <h2>Advertising</h2>
+  <p>
+    This site is paid for by display advertising. Where ad slots are filled, the ad network involved
+    sets its own terms and may use cookies; that relationship is between you and the network, and it
+    never has access to what you typed into the generator.
+  </p>
+</PageLayout>

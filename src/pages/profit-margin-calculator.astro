@@ -1,0 +1,70 @@
+---
+import ToolLayout from '~/layouts/ToolLayout.astro';
+import Calculator from '~/components/tool/Calculator.astro';
+import FormulaBlock from '~/components/tool/FormulaBlock.astro';
+
+const faqs = [
+  {
+    q: "What's a good profit margin?",
+    a: 'It depends entirely on the industry. Grocery runs on low single digits, software often above 70%. Compare against businesses like yours, not against a universal number.',
+  },
+  {
+    q: 'Is this gross or net margin?',
+    a: 'Gross. It only accounts for the direct cost of the item. Rent, salaries and tax come off later to give you net margin.',
+  },
+  {
+    q: 'How do I price for a target margin?',
+    a: 'Divide your cost by (1 − target margin). For a 40% margin on a 1,200 cost: 1,200 ÷ 0.6 = 2,000.',
+  },
+];
+---
+
+<ToolLayout
+  href="/profit-margin-calculator"
+  title="Profit margin calculator — margin, markup and profit per unit"
+  description="Enter your cost and selling price to get profit margin, markup and profit per unit. Free, instant, and nothing leaves your browser."
+  heading="Profit margin calculator"
+  standfirst="Enter what something costs you and what you sell it for. Get margin, markup and profit per unit instantly."
+  faqs={faqs}
+  related={[
+    '/markup-calculator',
+    '/break-even-calculator',
+    '/freelance-rate-calculator',
+    '/vat-calculator',
+    '/invoice-generator',
+  ]}
+>
+  <Calculator
+    slot="calculator"
+    calc="profit-margin"
+    fields={[
+      { name: 'cost', label: 'Cost per unit', value: '1,200' },
+      { name: 'price', label: 'Selling price', value: '1,800' },
+      { name: 'units', label: 'Units sold (optional)', value: '40' },
+    ]}
+    primaryLabel="Profit margin"
+    statLabels={['Markup', 'Profit per unit', 'Total revenue', 'Total profit']}
+  />
+
+  <h2>What profit margin actually tells you</h2>
+  <p>
+    Profit margin is the share of each sale you keep after paying for the thing you sold. Markup is
+    how much you added on top of your cost. People mix them up constantly, and pricing on the wrong
+    one is how a 50% markup turns into a 33% margin without anyone noticing.
+  </p>
+
+  <FormulaBlock
+    rows={[
+      { label: 'Margin', formula: '(Price − Cost) ÷ Price × 100' },
+      { label: 'Markup', formula: '(Price − Cost) ÷ Cost × 100' },
+    ]}
+  />
+
+  <h3>A worked example</h3>
+  <p>
+    A product costs you 1,200 to make and sells for 1,800. You've added 600, which is a 50% markup
+    on cost. But 600 is only a third of the 1,800 selling price, so your margin is 33.3%. If a
+    supplier asks for "a 40% margin" and you give them a 40% markup, you've underpriced by about 11
+    points.
+  </p>
+</ToolLayout>

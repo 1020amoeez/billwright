@@ -1,0 +1,172 @@
+---
+import Logo from './Logo.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const links = [
+  { href: '/invoice-generator', label: 'Invoice generator' },
+  { href: '/invoice-templates', label: 'Templates' },
+  { href: '/calculators', label: 'Calculators' },
+  { href: '/guides', label: 'Guides' },
+];
+
+const isActive = (href: string) =>
+  path === href || (href === '/calculators' && path.endsWith('-calculator'));
+---
+
+<header class="site-header">
+  <div class="site-header__inner shell">
+    <a class="brand" href="/">
+      <Logo size={30} />
+      Billwright
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      {
+        links.map((l) => (
+          <a href={l.href} class:list={['site-nav__link', { 'is-active': isActive(l.href) }]} aria-current={isActive(l.href) ? 'page' : undefined}>
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a class="btn-accent site-header__cta" href="/invoice-generator">Make an invoice</a>
+
+    <details class="menu">
+      <summary aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </summary>
+      <div class="menu__panel">
+        {links.map((l) => <a href={l.href} class="menu__link">{l.label}</a>)}
+        <a class="btn-accent menu__cta" href="/invoice-generator">Make an invoice</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .site-header__inner {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 36px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .site-nav__link.is-active {
+    color: var(--accent);
+  }
+
+  .site-header__cta {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 15px;
+  }
+
+  /* Disclosure menu — no equivalent in the 1440 design, added for narrow screens */
+  .menu {
+    display: none;
+    position: relative;
+  }
+
+  .menu > summary {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-btn);
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .menu > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu[open] > summary {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .menu__panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 12px);
+    z-index: 40;
+    width: max-content;
+    min-width: 240px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+  }
+
+  .menu__link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: var(--r-input);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .menu__cta {
+    height: 44px;
+    margin-top: 8px;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  @media (max-width: 1000px) {
+    .site-nav {
+      display: none;
+    }
+    .menu {
+      display: block;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .site-header__cta {
+      display: none;
+    }
+    .brand {
+      font-size: 19px;
+    }
+  }
+</style>

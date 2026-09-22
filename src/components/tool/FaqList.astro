@@ -1,0 +1,90 @@
+---
+export interface Faq {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  faqs: Faq[];
+  heading?: string;
+}
+const { faqs, heading = 'Common questions' } = Astro.props;
+---
+
+<h2 class="faq__heading">{heading}</h2>
+<div class="faq">
+  {
+    faqs.map((f, i) => (
+      <details open={i === 0}>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq__heading {
+    margin-top: 12px;
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .faq {
+    display: flex;
+    flex-direction: column;
+  }
+
+  details {
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  details:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  summary {
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    min-height: 24px;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary::after {
+    content: '';
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--text-muted);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform 150ms ease;
+  }
+
+  details[open] summary::after {
+    transform: rotate(-135deg) translate(-2px, -2px);
+  }
+
+  summary:hover::after { border-color: var(--accent); }
+
+  details p {
+    margin-top: 12px;
+    font-size: 16px;
+  }
+
+  @media (max-width: 520px) {
+    .faq__heading { font-size: 26px; }
+    summary { font-size: 17px; }
+  }
+</style>

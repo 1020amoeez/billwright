@@ -1,0 +1,362 @@
+---
+/** Abstract thumbnails, traced from the gallery cards in Templates.dc.html. */
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<div class:list={['mini', `mini--${id}`]} aria-hidden="true">
+  {
+    id === 'classic' && (
+      <>
+        <div class="mini__head">
+          <div class="mini__word">Invoice</div>
+          <div class="mini__mark" />
+        </div>
+        <div class="mini__parties">
+          <div class="mini__col">
+            <i class="bar bar--ink" style="width:60px;height:4px"></i>
+            <i class="bar" style="width:50px"></i>
+          </div>
+          <div class="mini__col">
+            <i class="bar bar--ink" style="width:60px;height:4px"></i>
+            <i class="bar" style="width:40px"></i>
+          </div>
+        </div>
+        <div class="mini__lines mini__lines--ruled">
+          <i class="bar" /><i class="bar" /><i class="bar" />
+        </div>
+        <i class="bar bar--ink mini__total" style="width:80px;height:8px"></i>
+      </>
+    )
+  }
+
+  {
+    id === 'bold-header' && (
+      <>
+        <div class="mini__band">
+          <div class="mini__word">Invoice</div>
+          <div class="mini__mark" />
+        </div>
+        <div class="mini__body">
+          <div class="mini__parties">
+            <div class="mini__col">
+              <i class="bar bar--ink" style="width:60px;height:4px"></i>
+              <i class="bar" style="width:50px"></i>
+            </div>
+            <div class="mini__col">
+              <i class="bar bar--ink" style="width:60px;height:4px"></i>
+              <i class="bar" style="width:40px"></i>
+            </div>
+          </div>
+          <div class="mini__lines">
+            <i class="bar" /><i class="bar" /><i class="bar" />
+          </div>
+          <i class="bar bar--accent mini__total" style="width:80px;height:8px"></i>
+        </div>
+      </>
+    )
+  }
+
+  {
+    id === 'compact' && (
+      <>
+        <div class="mini__head mini__head--center">
+          <div class="mini__word mini__word--sm">Invoice 0042</div>
+          <i class="bar bar--ink" style="width:50px;height:4px"></i>
+        </div>
+        <div class="mini__triple">
+          <i class="bar" /><i class="bar" /><i class="bar" />
+        </div>
+        <div class="mini__rows">
+          <i class="bar" /><i class="bar" /><i class="bar" /><i class="bar" />
+          <i class="bar" /><i class="bar" /><i class="bar" />
+        </div>
+        <i class="bar bar--ink mini__total" style="width:70px;height:6px"></i>
+      </>
+    )
+  }
+
+  {
+    id === 'minimal' && (
+      <>
+        <div class="mini__word mini__word--light">Invoice</div>
+        <div class="mini__col">
+          <i class="bar bar--ink" style="width:70px"></i>
+          <i class="bar" style="width:50px"></i>
+        </div>
+        <div class="mini__lines mini__lines--airy">
+          <i class="bar" /><i class="bar" /><i class="bar" />
+        </div>
+        <div class="mini__foot">
+          <i class="bar" style="width:40px"></i>
+          <div class="mini__amount">5,265.00</div>
+        </div>
+      </>
+    )
+  }
+
+  {
+    id === 'ledger' && (
+      <>
+        <div class="mini__head mini__head--rule">
+          <div class="mini__word mini__word--md">Tax invoice</div>
+          <i class="bar bar--ink" style="width:44px;height:4px"></i>
+        </div>
+        <div class="mini__parties">
+          <div class="mini__col">
+            <i class="bar bar--ink" style="width:60px"></i>
+            <i class="bar" style="width:40px"></i>
+            <i class="bar" style="width:50px"></i>
+          </div>
+          <div class="mini__col">
+            <i class="bar bar--ink" style="width:60px"></i>
+            <i class="bar" style="width:40px"></i>
+            <i class="bar" style="width:50px"></i>
+          </div>
+        </div>
+        <div class="mini__grid">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <span
+              class:list={[
+                'cell',
+                { 'cell--head': i < 5, 'cell--zebra': i >= 10 && i < 15 },
+              ]}
+            />
+          ))}
+        </div>
+        <div class="mini__totals">
+          <i class="bar" style="width:60px"></i>
+          <i class="bar" style="width:60px"></i>
+          <i class="bar bar--ink" style="width:80px;height:7px"></i>
+        </div>
+      </>
+    )
+  }
+
+  {
+    id === 'contractor' && (
+      <>
+        <div class="mini__head">
+          <div class="mini__col">
+            <i class="bar bar--ink" style="width:70px;height:5px"></i>
+            <i class="bar" style="width:50px"></i>
+          </div>
+          <div class="mini__word mini__word--md">Invoice</div>
+        </div>
+        <div class="mini__col">
+          <i class="bar" style="width:90px"></i>
+          <i class="bar" style="width:60px"></i>
+        </div>
+        <div class="mini__ledger">
+          <div class="mini__line"><i class="bar" style="width:100px"></i><i class="bar" style="width:30px"></i></div>
+          <div class="mini__line"><i class="bar" style="width:80px"></i><i class="bar" style="width:30px"></i></div>
+          <div class="mini__line"><i class="bar" style="width:110px"></i><i class="bar" style="width:30px"></i></div>
+        </div>
+        <div class="mini__bar">
+          <i class="bar bar--white" style="width:40px"></i>
+          <div class="mini__amount mini__amount--sm">5,265.00</div>
+        </div>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .mini {
+    width: 240px;
+    height: 280px;
+    padding: 22px;
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-radius: 3px 3px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 7px;
+    overflow: hidden;
+  }
+
+  .bar {
+    display: block;
+    height: 3px;
+    background: var(--paper-fill);
+  }
+
+  .bar--ink { background: var(--paper-ink); }
+  .bar--accent { background: var(--accent); }
+  .bar--white { background: #fff; }
+
+  .mini__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .mini__head--center { align-items: center; }
+
+  .mini__head--rule {
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .mini__word {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .mini__word--sm { font-size: 11px; }
+  .mini__word--md { font-size: 13px; }
+
+  .mini__word--light {
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .mini__mark {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+
+  .mini__parties {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .mini__col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mini__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .mini__lines--ruled {
+    border-top: 1px solid var(--paper-ink);
+    padding-top: 7px;
+  }
+
+  .mini__lines--airy { gap: 9px; }
+
+  .mini__total { align-self: flex-end; }
+
+  /* Bold header */
+  .mini--bold-header { padding: 0; gap: 0; }
+
+  .mini__band {
+    height: 64px;
+    padding: 18px 22px;
+    background: var(--paper-ink);
+    color: var(--paper);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mini__body {
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Compact */
+  .mini--compact { padding: 20px; gap: 10px; }
+
+  .mini__triple {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mini__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px 0;
+    border-top: 1px solid var(--paper-ink);
+    border-bottom: 1px solid var(--paper-ink);
+  }
+
+  /* Minimal */
+  .mini--minimal { padding: 34px 28px; gap: 22px; }
+
+  .mini__foot {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .mini__amount {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .mini__amount--sm { font-size: 11px; }
+
+  /* Ledger */
+  .mini--ledger { gap: 12px; }
+
+  .mini--ledger .mini__parties { gap: 8px; }
+
+  .mini__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 3px;
+    border: 1px solid var(--paper-fill);
+  }
+
+  .cell { height: 8px; }
+  .cell--head { background: var(--paper-fill-2); }
+  .cell--zebra { background: var(--paper-fill-3); }
+
+  .mini__totals {
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  /* Contractor */
+  .mini--contractor {
+    gap: 12px;
+    border-top: 10px solid var(--accent);
+  }
+
+  .mini__ledger {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--paper-ink);
+  }
+
+  .mini__line {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mini__bar {
+    margin-top: auto;
+    padding: 8px 10px;
+    background: var(--paper-ink);
+    color: var(--paper);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>

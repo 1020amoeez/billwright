@@ -1,0 +1,62 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+import type { Tool } from '~/data/tools';
+
+interface Props {
+  tool: Tool;
+}
+const { tool } = Astro.props;
+---
+
+<a class="tool-card" href={tool.href}>
+  <Icon name={tool.icon} size={28} stroke={1.8} />
+  <div class="tool-card__text">
+    <div class="tool-card__name">{tool.name}</div>
+    <div class="tool-card__blurb">{tool.blurb}</div>
+  </div>
+</a>
+
+<style>
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px;
+    border-radius: var(--r-card);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .tool-card:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .tool-card__text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tool-card__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+  }
+
+  .tool-card:hover .tool-card__name {
+    color: var(--accent);
+  }
+
+  .tool-card__blurb {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 520px) {
+    .tool-card { padding: 22px; }
+    .tool-card__name { font-size: 20px; }
+  }
+</style>

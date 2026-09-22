@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Invoice templates</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;background:#101522;color:#F3F5F9}
+a{color:#F3F5F9;text-decoration:none}a:hover{color:#FFB020}
+select{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1560px; box-sizing: border-box; background: #101522; color: #F3F5F9; display: flex; flex-direction: column; font-family: 'IBM Plex Sans', system-ui, sans-serif; overflow: hidden;">
+
+  <header style="height: 80px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1F2738;">
+    <a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em;">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M4 3h15l7 7v17H4z" fill="{{accent}}"/><path d="M9 15h12M9 20h8" stroke="#101522" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Billwright
+    </a>
+    <nav style="display: flex; gap: 36px; font-size: 15px; font-weight: 500;">
+      <a href="Generator.dc.html">Invoice generator</a>
+      <a href="Templates.dc.html" style="color: {{accent}};">Templates</a>
+      <a href="Tool.dc.html">Calculators</a>
+      <a href="#guides">Guides</a>
+    </nav>
+    <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 15px;">Make an invoice</a>
+  </header>
+
+  <section style="box-sizing: border-box; padding: 72px 120px 40px; display: flex; flex-direction: column; gap: 32px;">
+    <div style="display: flex; flex-direction: column; gap: 14px; max-width: 760px;">
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 56px; line-height: 1.04; letter-spacing: -0.03em;">Invoice templates</h1>
+      <p style="margin: 0; font-size: 18px; line-height: 1.5; color: #A9B1C3;">Pick a layout, then fill it in the generator. Every template exports to PDF, and Word and Excel versions are available if you'd rather edit offline.</p>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #A9B1C3;">Profession
+        <select style="height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;"><option>All</option><option>Freelancer</option><option>Contractor</option><option>Photographer</option><option>Consultant</option></select>
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #A9B1C3;">Country
+        <select style="height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;"><option>Any</option><option>Pakistan</option><option>UAE</option><option>UK</option><option>India</option></select>
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #A9B1C3;">Format
+        <select style="height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #3A4459; background: #171D2C; color: #F3F5F9; font-size: 15px;"><option>PDF</option><option>Word</option><option>Excel</option></select>
+      </label>
+    </div>
+  </section>
+
+  <section style="box-sizing: border-box; padding: 16px 120px 80px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+
+    <!-- Classic -->
+    <div style="display: flex; flex-direction: column; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; overflow: hidden;">
+      <div style="height: 300px; box-sizing: border-box; padding: 28px 28px 0; background: #0B0F19; display: flex; justify-content: center; align-items: flex-end;">
+        <div style="width: 240px; height: 280px; box-sizing: border-box; padding: 22px; background: #FFFFFF; color: #151A28; border-radius: 3px 3px 0 0; display: flex; flex-direction: column; gap: 14px; font-size: 7px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 16px;">Invoice</div><div style="width: 18px; height: 18px; border-radius: 3px; background: {{accent}};"></div></div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;"><div style="display: flex; flex-direction: column; gap: 2px;"><div style="width: 60px; height: 4px; background: #151A28;"></div><div style="width: 50px; height: 3px; background: #D9DCE5;"></div></div><div style="display: flex; flex-direction: column; gap: 2px;"><div style="width: 60px; height: 4px; background: #151A28;"></div><div style="width: 40px; height: 3px; background: #D9DCE5;"></div></div></div>
+          <div style="display: flex; flex-direction: column; gap: 7px; border-top: 1px solid #151A28; padding-top: 7px;"><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div></div>
+          <div style="align-self: flex-end; width: 80px; height: 8px; background: #151A28;"></div>
+        </div>
+      </div>
+      <div style="box-sizing: border-box; padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Classic</div><div style="font-size: 14px; color: #A9B1C3;">Works for almost everyone</div></div>
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 14px; white-space: nowrap;">Use template</a>
+      </div>
+    </div>
+
+    <!-- Bold header -->
+    <div style="display: flex; flex-direction: column; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; overflow: hidden;">
+      <div style="height: 300px; box-sizing: border-box; padding: 28px 28px 0; background: #0B0F19; display: flex; justify-content: center; align-items: flex-end;">
+        <div style="width: 240px; height: 280px; box-sizing: border-box; background: #FFFFFF; color: #151A28; border-radius: 3px 3px 0 0; display: flex; flex-direction: column; overflow: hidden;">
+          <div style="height: 64px; box-sizing: border-box; padding: 18px 22px; background: #151A28; color: #FFFFFF; display: flex; justify-content: space-between; align-items: center;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 16px;">Invoice</div><div style="width: 18px; height: 18px; border-radius: 3px; background: {{accent}};"></div></div>
+          <div style="box-sizing: border-box; padding: 18px 22px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;"><div style="display: flex; flex-direction: column; gap: 2px;"><div style="width: 60px; height: 4px; background: #151A28;"></div><div style="width: 50px; height: 3px; background: #D9DCE5;"></div></div><div style="display: flex; flex-direction: column; gap: 2px;"><div style="width: 60px; height: 4px; background: #151A28;"></div><div style="width: 40px; height: 3px; background: #D9DCE5;"></div></div></div>
+            <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div></div>
+            <div style="align-self: flex-end; width: 80px; height: 8px; background: {{accent}};"></div>
+          </div>
+        </div>
+      </div>
+      <div style="box-sizing: border-box; padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Bold header</div><div style="font-size: 14px; color: #A9B1C3;">Agencies, studios, designers</div></div>
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 14px; white-space: nowrap;">Use template</a>
+      </div>
+    </div>
+
+    <!-- Compact -->
+    <div style="display: flex; flex-direction: column; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; overflow: hidden;">
+      <div style="height: 300px; box-sizing: border-box; padding: 28px 28px 0; background: #0B0F19; display: flex; justify-content: center; align-items: flex-end;">
+        <div style="width: 240px; height: 280px; box-sizing: border-box; padding: 20px; background: #FFFFFF; color: #151A28; border-radius: 3px 3px 0 0; display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 11px;">Invoice 0042</div><div style="width: 50px; height: 4px; background: #151A28;"></div></div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;"><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div></div>
+          <div style="display: flex; flex-direction: column; gap: 5px; border-top: 1px solid #151A28; border-bottom: 1px solid #151A28; padding: 6px 0;"><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div></div>
+          <div style="align-self: flex-end; width: 70px; height: 6px; background: #151A28;"></div>
+        </div>
+      </div>
+      <div style="box-sizing: border-box; padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Compact</div><div style="font-size: 14px; color: #A9B1C3;">Many line items, one page</div></div>
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 14px; white-space: nowrap;">Use template</a>
+      </div>
+    </div>
+
+    <!-- Minimal -->
+    <div style="display: flex; flex-direction: column; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; overflow: hidden;">
+      <div style="height: 300px; box-sizing: border-box; padding: 28px 28px 0; background: #0B0F19; display: flex; justify-content: center; align-items: flex-end;">
+        <div style="width: 240px; height: 280px; box-sizing: border-box; padding: 34px 28px; background: #FFFFFF; color: #151A28; border-radius: 3px 3px 0 0; display: flex; flex-direction: column; gap: 22px;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 500; font-size: 12px; letter-spacing: 0.02em;">Invoice</div>
+          <div style="display: flex; flex-direction: column; gap: 3px;"><div style="width: 70px; height: 3px; background: #151A28;"></div><div style="width: 50px; height: 3px; background: #D9DCE5;"></div></div>
+          <div style="display: flex; flex-direction: column; gap: 9px;"><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div><div style="height: 3px; background: #D9DCE5;"></div></div>
+          <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end;"><div style="width: 40px; height: 3px; background: #D9DCE5;"></div><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 14px;">5,265.00</div></div>
+        </div>
+      </div>
+      <div style="box-sizing: border-box; padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Minimal</div><div style="font-size: 14px; color: #A9B1C3;">Consultants, writers, coaches</div></div>
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 14px; white-space: nowrap;">Use template</a>
+      </div>
+    </div>
+
+    <!-- Ledger -->
+    <div style="display: flex; flex-direction: column; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; overflow: hidden;">
+      <div style="height: 300px; box-sizing: border-box; padding: 28px 28px 0; background: #0B0F19; display: flex; justify-content: center; align-items: flex-end;">
+        <div style="width: 240px; height: 280px; box-sizing: border-box; padding: 22px; background: #FFFFFF; color: #151A28; border-radius: 3px 3px 0 0; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid {{accent}}; padding-bottom: 8px;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 13px;">Tax invoice</div><div style="width: 44px; height: 4px; background: #151A28;"></div></div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;"><div style="display: flex; flex-direction: column; gap: 2px;"><div style="width: 60px; height: 3px; background: #151A28;"></div><div style="width: 40px; height: 3px; background: #D9DCE5;"></div><div style="width: 50px; height: 3px; background: #D9DCE5;"></div></div><div style="display: flex; flex-direction: column; gap: 2px;"><div style="width: 60px; height: 3px; background: #151A28;"></div><div style="width: 40px; height: 3px; background: #D9DCE5;"></div><div style="width: 50px; height: 3px; background: #D9DCE5;"></div></div></div>
+          <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; border: 1px solid #D9DCE5;"><div style="height: 8px; background: #EEF0F5;"></div><div style="height: 8px; background: #EEF0F5;"></div><div style="height: 8px; background: #EEF0F5;"></div><div style="height: 8px; background: #EEF0F5;"></div><div style="height: 8px; background: #EEF0F5;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div><div style="height: 8px; background: #F7F8FB;"></div><div style="height: 8px; background: #F7F8FB;"></div><div style="height: 8px; background: #F7F8FB;"></div><div style="height: 8px; background: #F7F8FB;"></div><div style="height: 8px; background: #F7F8FB;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div><div style="height: 8px;"></div></div>
+          <div style="align-self: flex-end; display: flex; flex-direction: column; gap: 3px; align-items: flex-end;"><div style="width: 60px; height: 3px; background: #D9DCE5;"></div><div style="width: 60px; height: 3px; background: #D9DCE5;"></div><div style="width: 80px; height: 7px; background: #151A28;"></div></div>
+        </div>
+      </div>
+      <div style="box-sizing: border-box; padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Ledger</div><div style="font-size: 14px; color: #A9B1C3;">Tax-registered businesses, GST and VAT fields</div></div>
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 14px; white-space: nowrap;">Use template</a>
+      </div>
+    </div>
+
+    <!-- Contractor -->
+    <div style="display: flex; flex-direction: column; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; overflow: hidden;">
+      <div style="height: 300px; box-sizing: border-box; padding: 28px 28px 0; background: #0B0F19; display: flex; justify-content: center; align-items: flex-end;">
+        <div style="width: 240px; height: 280px; box-sizing: border-box; padding: 22px; background: #FFFFFF; color: #151A28; border-radius: 3px 3px 0 0; display: flex; flex-direction: column; gap: 12px; border-top: 10px solid {{accent}};">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;"><div style="display: flex; flex-direction: column; gap: 3px;"><div style="width: 70px; height: 5px; background: #151A28;"></div><div style="width: 50px; height: 3px; background: #D9DCE5;"></div></div><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 13px;">Invoice</div></div>
+          <div style="display: flex; flex-direction: column; gap: 3px;"><div style="width: 90px; height: 3px; background: #D9DCE5;"></div><div style="width: 60px; height: 3px; background: #D9DCE5;"></div></div>
+          <div style="display: flex; flex-direction: column; gap: 6px; border-top: 1px solid #151A28; padding-top: 6px;"><div style="display: flex; justify-content: space-between;"><div style="width: 100px; height: 3px; background: #D9DCE5;"></div><div style="width: 30px; height: 3px; background: #D9DCE5;"></div></div><div style="display: flex; justify-content: space-between;"><div style="width: 80px; height: 3px; background: #D9DCE5;"></div><div style="width: 30px; height: 3px; background: #D9DCE5;"></div></div><div style="display: flex; justify-content: space-between;"><div style="width: 110px; height: 3px; background: #D9DCE5;"></div><div style="width: 30px; height: 3px; background: #D9DCE5;"></div></div></div>
+          <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #151A28; color: #FFFFFF;"><div style="width: 40px; height: 3px; background: #FFFFFF;"></div><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 11px;">5,265.00</div></div>
+        </div>
+      </div>
+      <div style="box-sizing: border-box; padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 20px;">Contractor</div><div style="font-size: 14px; color: #A9B1C3;">Trades, repairs, on-site work</div></div>
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 14px; white-space: nowrap;">Use template</a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top: auto; box-sizing: border-box; padding: 40px 120px; border-top: 1px solid #1F2738; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #A9B1C3;">
+    <div>Billwright. Free tools for people who send invoices.</div>
+    <div style="display: flex; gap: 28px;">
+      <a href="#guides" style="color: #A9B1C3;">Guides</a>
+      <a href="#privacy" style="color: #A9B1C3;">Privacy</a>
+      <a href="#contact" style="color: #A9B1C3;">Contact</a>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFB020","options":["#FFB020","#FF7A45","#5EEAD4","#A78BFA"]},"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FFB020' };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+/* Shared control surfaces. Global so components can compose them. */
+
+.btn-accent,
+.btn-outline,
+.btn-subtle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--r-btn);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 0;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-accent:hover {
+  background: #FFC04D;
+  color: var(--accent-ink);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  font-weight: 500;
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-subtle {
+  background: var(--border);
+  color: var(--text);
+  font-weight: 500;
+  font-size: 14px;
+}
+.btn-subtle:hover {
+  background: #36405A;
+  color: var(--text);
+}
+
+/* Form controls */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.field > input,
+.field > select,
+.field > textarea {
+  height: 44px;
+  padding: 0 12px;
+  border-radius: var(--r-input);
+  border: 1px solid var(--border-strong);
+  background-color: var(--panel);
+  color: var(--text);
+  font-size: 15px;
+}
+
+.field > textarea {
+  height: auto;
+  padding: 10px 12px;
+  resize: none;
+  line-height: 1.5;
+}
+
+.field > input::placeholder,
+.field > textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.field > input:hover,
+.field > select:hover,
+.field > textarea:hover {
+  border-color: #4A556E;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A9B1C3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 34px !important;
+}

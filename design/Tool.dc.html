@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Profit margin calculator page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;background:#101522;color:#F3F5F9}
+a{color:#F3F5F9;text-decoration:none}a:hover{color:#FFB020}
+input,select{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1980px; box-sizing: border-box; background: #101522; color: #F3F5F9; display: flex; flex-direction: column; font-family: 'IBM Plex Sans', system-ui, sans-serif; overflow: hidden;">
+
+  <header style="height: 80px; flex-shrink: 0; box-sizing: border-box; padding: 0 120px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1F2738;">
+    <a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em;">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M4 3h15l7 7v17H4z" fill="{{accent}}"/><path d="M9 15h12M9 20h8" stroke="#101522" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Billwright
+    </a>
+    <nav style="display: flex; gap: 36px; font-size: 15px; font-weight: 500;">
+      <a href="Generator.dc.html">Invoice generator</a>
+      <a href="Templates.dc.html">Templates</a>
+      <a href="Tool.dc.html" style="color: {{accent}};">Calculators</a>
+      <a href="#guides">Guides</a>
+    </nav>
+    <a href="Generator.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 10px; background: {{accent}}; color: #101522; font-weight: 600; font-size: 15px;">Make an invoice</a>
+  </header>
+
+  <div style="box-sizing: border-box; padding: 64px 120px 0; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 64px; align-items: start;">
+
+    <!-- Main column -->
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <nav style="display: flex; gap: 8px; font-size: 14px; color: #A9B1C3;"><a href="Tool.dc.html" style="color: #A9B1C3;">Calculators</a><span>/</span><span>Profit margin</span></nav>
+        <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 56px; line-height: 1.04; letter-spacing: -0.03em;">Profit margin calculator</h1>
+        <p style="margin: 0; font-size: 18px; line-height: 1.5; color: #A9B1C3; max-width: 640px;">Enter what something costs you and what you sell it for. Get margin, markup and profit per unit instantly.</p>
+      </div>
+
+      <!-- Calculator -->
+      <div style="box-sizing: border-box; padding: 32px; border-radius: 18px; background: #171D2C; border: 1px solid #2B3448; display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #A9B1C3;">Cost per unit
+            <input type="text" value="1,200" style="height: 52px; box-sizing: border-box; padding: 0 14px; border-radius: 10px; border: 1px solid #3A4459; background: #101522; color: #F3F5F9; font-size: 20px; font-variant-numeric: tabular-nums;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #A9B1C3;">Selling price
+            <input type="text" value="1,800" style="height: 52px; box-sizing: border-box; padding: 0 14px; border-radius: 10px; border: 1px solid #3A4459; background: #101522; color: #F3F5F9; font-size: 20px; font-variant-numeric: tabular-nums;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #A9B1C3;">Units sold (optional)
+            <input type="text" value="40" style="height: 52px; box-sizing: border-box; padding: 0 14px; border-radius: 10px; border: 1px solid #3A4459; background: #101522; color: #F3F5F9; font-size: 20px; font-variant-numeric: tabular-nums;">
+          </label>
+          <button type="button" style="height: 48px; margin-top: 4px; border-radius: 10px; border: 1px solid #3A4459; background: transparent; color: #F3F5F9; font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer;">Reset</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 18px; box-sizing: border-box; padding: 24px; border-radius: 12px; background: #101522;">
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="font-size: 14px; color: #A9B1C3;">Profit margin</div>
+            <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 56px; line-height: 1; letter-spacing: -0.03em; color: {{accent}}; font-variant-numeric: tabular-nums;">33.3%</div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding-top: 16px; border-top: 1px solid #2B3448;">
+            <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-size: 13px; color: #A9B1C3;">Markup</div><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 24px; font-variant-numeric: tabular-nums;">50%</div></div>
+            <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-size: 13px; color: #A9B1C3;">Profit per unit</div><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 24px; font-variant-numeric: tabular-nums;">600</div></div>
+            <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-size: 13px; color: #A9B1C3;">Total revenue</div><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 24px; font-variant-numeric: tabular-nums;">72,000</div></div>
+            <div style="display: flex; flex-direction: column; gap: 4px;"><div style="font-size: 13px; color: #A9B1C3;">Total profit</div><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 24px; font-variant-numeric: tabular-nums;">24,000</div></div>
+          </div>
+          <button type="button" style="margin-top: auto; height: 44px; border-radius: 10px; border: 0; background: #2B3448; color: #F3F5F9; font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer;">Copy results</button>
+        </div>
+      </div>
+
+      <!-- Explainer -->
+      <article style="display: flex; flex-direction: column; gap: 28px; max-width: 680px; font-size: 17px; line-height: 1.6; color: #C9CFDB;">
+        <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 32px; letter-spacing: -0.02em; color: #F3F5F9;">What profit margin actually tells you</h2>
+        <p style="margin: 0;">Profit margin is the share of each sale you keep after paying for the thing you sold. Markup is how much you added on top of your cost. People mix them up constantly, and pricing on the wrong one is how a 50% markup turns into a 33% margin without anyone noticing.</p>
+        <div style="box-sizing: border-box; padding: 24px 28px; border-radius: 12px; background: #171D2C; border: 1px solid #2B3448; display: flex; flex-direction: column; gap: 12px; font-size: 18px; color: #F3F5F9;">
+          <div style="display: flex; gap: 16px; align-items: baseline;"><span style="width: 90px; color: #A9B1C3; font-size: 15px;">Margin</span><span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600;">(Price − Cost) ÷ Price × 100</span></div>
+          <div style="display: flex; gap: 16px; align-items: baseline;"><span style="width: 90px; color: #A9B1C3; font-size: 15px;">Markup</span><span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600;">(Price − Cost) ÷ Cost × 100</span></div>
+        </div>
+        <h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 24px; color: #F3F5F9;">A worked example</h3>
+        <p style="margin: 0;">A product costs you 1,200 to make and sells for 1,800. You've added 600, which is a 50% markup on cost. But 600 is only a third of the 1,800 selling price, so your margin is 33.3%. If a supplier asks for "a 40% margin" and you give them a 40% markup, you've underpriced by about 11 points.</p>
+
+        <h2 style="margin: 12px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 32px; letter-spacing: -0.02em; color: #F3F5F9;">Common questions</h2>
+        <div style="display: flex; flex-direction: column;">
+          <details open style="padding: 20px 0; border-top: 1px solid #2B3448;">
+            <summary style="font-weight: 600; font-size: 18px; color: #F3F5F9; cursor: pointer; list-style: none;">What's a good profit margin?</summary>
+            <p style="margin: 12px 0 0; font-size: 16px;">It depends entirely on the industry. Grocery runs on low single digits, software often above 70%. Compare against businesses like yours, not against a universal number.</p>
+          </details>
+          <details style="padding: 20px 0; border-top: 1px solid #2B3448;">
+            <summary style="font-weight: 600; font-size: 18px; color: #F3F5F9; cursor: pointer; list-style: none;">Is this gross or net margin?</summary>
+            <p style="margin: 12px 0 0; font-size: 16px;">Gross. It only accounts for the direct cost of the item. Rent, salaries and tax come off later to give you net margin.</p>
+          </details>
+          <details style="padding: 20px 0; border-top: 1px solid #2B3448; border-bottom: 1px solid #2B3448;">
+            <summary style="font-weight: 600; font-size: 18px; color: #F3F5F9; cursor: pointer; list-style: none;">How do I price for a target margin?</summary>
+            <p style="margin: 12px 0 0; font-size: 16px;">Divide your cost by (1 − target margin). For a 40% margin on a 1,200 cost: 1,200 ÷ 0.6 = 2,000.</p>
+          </details>
+        </div>
+      </article>
+    </div>
+
+    <!-- Sidebar -->
+    <aside style="display: flex; flex-direction: column; gap: 24px; position: sticky; top: 24px;">
+      <div style="box-sizing: border-box; padding: 24px; border-radius: 14px; background: #171D2C; border: 1px solid #2B3448; display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 18px;">Related tools</div>
+        <a href="Tool.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #2B3448; font-size: 15px;">Markup calculator</a>
+        <a href="Tool.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #2B3448; font-size: 15px;">Break-even calculator</a>
+        <a href="Tool.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #2B3448; font-size: 15px;">Freelance rate calculator</a>
+        <a href="Tool.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #2B3448; font-size: 15px;">VAT calculator</a>
+        <a href="Generator.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 15px;">Invoice generator</a>
+      </div>
+      <div style="box-sizing: border-box; height: 280px; border-radius: 14px; border: 1px dashed #3A4459; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6B7488;">Ad slot 300×250</div>
+      <div style="box-sizing: border-box; padding: 24px; border-radius: 14px; background: {{accent}}; color: #101522; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.15;">Priced it? Now invoice it.</div>
+        <div style="font-size: 14px; line-height: 1.5;">Turn these numbers into a PDF invoice in a minute. Free, no account.</div>
+        <a href="Generator.dc.html" style="display: inline-flex; align-items: center; justify-content: center; height: 44px; border-radius: 10px; background: #101522; color: #F3F5F9; font-weight: 600; font-size: 14px;">Open the invoice generator</a>
+      </div>
+    </aside>
+  </div>
+
+  <footer style="margin-top: auto; box-sizing: border-box; padding: 40px 120px; border-top: 1px solid #1F2738; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #A9B1C3;">
+    <div>Billwright. Free tools for people who send invoices.</div>
+    <div style="display: flex; gap: 28px;">
+      <a href="#guides" style="color: #A9B1C3;">Guides</a>
+      <a href="#privacy" style="color: #A9B1C3;">Privacy</a>
+      <a href="#contact" style="color: #A9B1C3;">Contact</a>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFB020","options":["#FFB020","#FF7A45","#5EEAD4","#A78BFA"]},"$preview":{"width":1440,"height":1980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FFB020' };
+  }
+}
+</script>
+</body>
+</html>
