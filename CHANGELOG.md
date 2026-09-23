@@ -134,12 +134,46 @@ dark/light theme was added across the whole site.
 - Superseded components (`HeroPaper`, `ToolGrid`, `CountryStrip`) were deleted
   rather than left in place.
 
+## AI draft (opt-in)
+
+The generator's fixed line-item rows were the weakest part of the product, so a
+"Describe the work" box turns a sentence into structured items.
+
+- **It breaks the local-first claim, so the claim changed.** Everything else
+  still runs in the browser, but this button sends the sentence you typed to a
+  Cloudflare Pages Function, which calls Claude. The hero, the value section,
+  the generator's footer note and the privacy page were all rewritten to say so
+  — the privacy page has a section naming exactly what is and is not sent.
+- **What is sent is only the description.** Not the client, the business
+  details, the invoice number, the dates, the existing items, the totals or the
+  notes. Totals are still computed locally by `computeTotals`.
+- **Claude Haiku 4.5**, chosen on cost: roughly $0.0014 per draft with the
+  system prompt cached, against about $0.007 on Opus 5. At Pakistani ad rates
+  (~$1 RPM) Opus would have cost more than the pageviews earn at moderate
+  adoption; Haiku stays profitable, and the task — turning a sentence into line
+  items — does not need more.
+- **Structured outputs** (`output_config.format` with a zod schema) rather than
+  parsing free text, so a malformed response is caught rather than half-read.
+- **The model never touches money logic.** It may not compute totals, apply
+  tax or choose a rate; it returns descriptions, quantities and unit prices,
+  and returns 0 for any price the text does not state so the person fills it in.
+- **The quota fails closed.** Without the `AI_LIMITS` KV binding the endpoint
+  returns 503 instead of billing an uncapped key. Default is 20 drafts per IP
+  per day; `AI_ALLOW_UNLIMITED` bypasses it and is local-development only.
+- **The feature is optional.** With no key configured the box reports that
+  drafting is unavailable and nothing else changes.
+
 ## Still open
 
 - **Word and Excel downloads.** `Templates.dc.html` says they are available and
   the Format filter offers them. The filter works against a `formats` field per
   template, but nothing generates `.docx` or `.xlsx` yet — "Use template" always
   opens the generator. Either build the exporters or soften the copy.
+- **The AI endpoint has never been run against the live API.** There were no
+  Anthropic credentials in the environment it was built in, so the client path,
+  both failure paths and the append/replace behaviour were verified against a
+  stubbed endpoint; the model call itself is unexercised. First real run should
+  be `npm run dev:functions` with a key in `.dev.vars`.
 - **The contact page has no address.** It explains what is useful to report but
   cannot say where to send it. Add a real inbox before launch.
 - **Ad slots exist only on tool pages**, as drawn. If the homepage or gallery

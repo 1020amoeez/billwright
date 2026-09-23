@@ -85,6 +85,37 @@ const noun = copy.title.toLowerCase();
           <h2>Items</h2>
           <button type="button" class="btn-outline form__add" data-action="add-item">Add item</button>
         </div>
+        <!-- Opt-in AI drafting. Collapsed by default and clearly labelled,
+             because using it is the one time anything leaves the browser. -->
+        <details class="draft">
+          <summary>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"></path>
+            </svg>
+            Describe the work instead
+          </summary>
+          <div class="draft__body">
+            <label class="field">
+              <span class="visually-hidden">Describe the work you did</span>
+              <textarea
+                rows="3"
+                id="draft-text"
+                maxlength="600"
+                placeholder="Built a 5-page WordPress site, 2 rounds of revisions, 40 hours at 3,500 an hour"
+              ></textarea>
+            </label>
+            <div class="draft__actions">
+              <button type="button" class="btn-accent draft__go" data-action="draft">
+                Draft line items
+              </button>
+              <p class="draft__note">
+                Sends only this sentence, and only when you press the button. Your client, business
+                details and amounts stay on your device.
+              </p>
+            </div>
+          </div>
+        </details>
+
         <div class="items">
           <div class="items__head">
             <div>Description</div>
@@ -124,7 +155,7 @@ const noun = copy.title.toLowerCase();
       <div class="form__foot">
         <p class="form__trust">
           <Icon name="lock" size={16} stroke={2} />
-          Saved in this browser only. Nothing is sent to a server.
+          Saved in this browser only. Your invoice is never uploaded.
         </p>
         <button type="button" class="btn-outline form__reset" data-action="reset">Start a new {noun}</button>
       </div>
@@ -201,6 +232,71 @@ const noun = copy.title.toLowerCase();
     height: 36px;
     padding: 0 14px;
     font-size: 14px;
+  }
+
+  .draft {
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    background: var(--bg-raised);
+    overflow: hidden;
+  }
+
+  .draft > summary {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .draft > summary::-webkit-details-marker { display: none; }
+  .draft > summary:hover { color: var(--accent-text); }
+  .draft[open] > summary {
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .draft__body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .draft__body textarea {
+    height: auto;
+    padding: 10px 12px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .draft__actions {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .draft__go {
+    flex-shrink: 0;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+
+  .draft__go[disabled] {
+    opacity: 0.65;
+    cursor: progress;
+  }
+
+  .draft__note {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--text-faint);
   }
 
   .items {

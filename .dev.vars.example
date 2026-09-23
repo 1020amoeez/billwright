@@ -1,0 +1,9 @@
+# Copy to .dev.vars for local `npm run dev:functions`. Never commit .dev.vars.
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Local only: skips the KV quota check so you do not need a namespace to test.
+# Never set this in production — it removes the per-IP spend ceiling.
+AI_ALLOW_UNLIMITED=true
+
+# Optional: drafts allowed per IP per day in production. Defaults to 20.
+# AI_DAILY_LIMIT=20

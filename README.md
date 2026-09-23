@@ -43,6 +43,41 @@ national rate).
 **An invoice template** — add it to `src/data/templates.ts`, a thumbnail branch
 in `TemplateMini.astro`, and a `.paper--<id>` block in `src/styles/paper.css`.
 
+## AI draft (optional)
+
+The generator has a "Describe the work" box that turns a sentence into line
+items. It is the only part of the site that makes a network request with
+anything the user typed, it runs only on an explicit button press, and it sends
+that sentence alone — never the client, the business details, the existing
+items or the totals. Amounts are still totalled locally by `computeTotals`.
+
+It is a Cloudflare Pages Function (`functions/api/draft-items.ts`) calling
+Claude Haiku 4.5 with structured outputs, so the API key never reaches the
+browser. Roughly $0.0014 per draft with the system prompt cached.
+
+**The site works without it.** With no key configured the endpoint returns 503
+and the box reports that drafting is unavailable; every other feature is
+unaffected.
+
+### Setting it up
+
+```bash
+# Local
+cp .dev.vars.example .dev.vars   # add your key, keep AI_ALLOW_UNLIMITED=true
+npm run dev:functions            # http://localhost:8788
+```
+
+For production, in the Cloudflare Pages project:
+
+1. **Settings → Variables → Add secret**: `ANTHROPIC_API_KEY`
+2. **Workers & Pages → KV → Create namespace**, then bind it to the Pages
+   project under **Settings → Bindings** with the variable name `AI_LIMITS`
+3. Optionally set `AI_DAILY_LIMIT` (defaults to 20 drafts per IP per day)
+
+The quota **fails closed**: without the `AI_LIMITS` binding the endpoint
+returns 503 rather than billing your key with no ceiling. `AI_ALLOW_UNLIMITED`
+bypasses it and is for local development only.
+
 ## Notes
 
 - The homepage and template gallery ship no JavaScript. pdf-lib (435KB) is

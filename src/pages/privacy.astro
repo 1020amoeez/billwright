@@ -32,8 +32,26 @@ import PageLayout from '~/layouts/PageLayout.astro';
 
   <h2>Requests that leave your browser</h2>
   <p>
-    None, beyond the site itself. The two fonts are served from this domain rather than from Google
-    Fonts, so no third party sees your IP address when a page loads.
+    Loading a page makes no third-party requests at all. The two fonts are served from this domain
+    rather than from Google Fonts, so nobody else sees your IP address when a page loads.
+  </p>
+
+  <h2>The one exception: AI draft</h2>
+  <p>
+    The generator has an optional "Describe the work" box. If you type into it and press the button,
+    that sentence — and nothing else — is sent to our server, which passes it to Anthropic's Claude
+    API to turn into line items. It is the only feature on the site that makes a network request
+    with anything you typed.
+  </p>
+  <p>
+    What is <em>not</em> sent: your business name and address, your client, your invoice number, your
+    dates, your existing line items, your totals and your notes. The amounts on the returned items
+    are added up on your device as always.
+  </p>
+  <p>
+    If you never open that box, nothing about your invoice is ever transmitted. Anthropic does not
+    train models on API inputs; their retention terms apply to the sentence you send. Every other
+    field in the generator stays local whether you use the feature or not.
   </p>
 
   <h2>Advertising</h2>

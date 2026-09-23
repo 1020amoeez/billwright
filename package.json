@@ -7,15 +7,20 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "dev:functions": "astro build && wrangler pages dev dist --kv AI_LIMITS"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
     "@astrojs/sitemap": "^3.6.0",
     "astro": "^5.14.1",
-    "pdf-lib": "^1.17.1"
+    "pdf-lib": "^1.17.1",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "typescript": "^5.9.2"
+    "@cloudflare/workers-types": "^5.20260923.1",
+    "typescript": "^5.9.2",
+    "wrangler": "^4.136.3"
   }
 }

@@ -229,6 +229,11 @@ export function initGenerator(): void {
       say('Item removed.');
     }
 
+    if (action === 'draft') {
+      void draftItems(button);
+      return;
+    }
+
     if (action === 'reset') {
       clear(kind);
       state = defaultState(kind);
@@ -240,6 +245,69 @@ export function initGenerator(): void {
       say('Started a new document.');
     }
   });
+
+  // --- Draft line items from a description -------------------------------
+  /**
+   * The only call that leaves the browser, and only on this click. It posts the
+   * typed sentence and nothing else; the returned rows are appended as ordinary
+   * items, so everything after this point is local again.
+   */
+  async function draftItems(button: HTMLButtonElement): Promise<void> {
+    const box = document.querySelector<HTMLTextAreaElement>('#draft-text');
+    const text = box?.value.trim() ?? '';
+
+    if (text.length < 3) {
+      say('Describe the work in a sentence or two first.');
+      box?.focus();
+      return;
+    }
+
+    const original = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Drafting…';
+
+    try {
+      const response = await fetch('/api/draft-items', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+
+      const payload = (await response.json()) as {
+        items?: { description: string; qty: number; unitPrice: number }[];
+        error?: string;
+      };
+
+      if (!response.ok || !payload.items?.length) {
+        say(payload.error ?? 'Could not draft those items. Add them by hand.');
+        return;
+      }
+
+      const drafted = payload.items.map((item) => ({
+        ...emptyItem(),
+        description: item.description,
+        qty: String(item.qty),
+        unitPrice: item.unitPrice > 0 ? formatAmount(item.unitPrice, state.currency) : '',
+      }));
+
+      update((draft) => {
+        // Replace the seed rows on first use; add to real work afterwards.
+        const untouched = draft.items.every(
+          (item) => !item.description.trim() && !parseAmount(item.unitPrice),
+        );
+        draft.items = untouched ? drafted : [...draft.items, ...drafted];
+      }, { items: true });
+
+      measure();
+      if (box) box.value = '';
+      say(`Added ${drafted.length} line item${drafted.length === 1 ? '' : 's'}. Check the numbers.`);
+    } catch {
+      say('Could not reach the drafting service. Add the items by hand.');
+    } finally {
+      button.disabled = false;
+      button.textContent = original;
+    }
+  }
 
   // --- Top bar -----------------------------------------------------------
   templateSelect?.addEventListener('change', () => {
