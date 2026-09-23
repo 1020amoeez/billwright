@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
 import Icon from '~/components/ui/Icon.astro';
 import { templates } from '~/data/templates';
 import { currencyCodes } from '~/data/countries';
@@ -44,6 +45,8 @@ const { currency, template, downloadLabel } = Astro.props;
         }
       </select>
     </label>
+
+    <ThemeToggle />
 
     <button type="button" class="btn-accent app-header__download" id="download-pdf">
       <Icon name="download" size={18} stroke={2.2} color="currentColor" />
@@ -126,7 +129,7 @@ const { currency, template, downloadLabel } = Astro.props;
       height: 44px;
     }
     .app-header__download {
-      flex: 1 1 100%;
+      flex: 1 1 auto;
     }
   }
 </style>

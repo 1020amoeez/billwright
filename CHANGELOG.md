@@ -85,6 +85,55 @@ The instruction was to follow the design files where the two disagree.
   the table header repeats, and the footer reads "Page 2 of 3". The preview
   grows in the same way and reports the same count.
 
+## Homepage redesign and theming
+
+The homepage was rebuilt as a product page rather than a card list, and a
+dark/light theme was added across the whole site.
+
+### Theming
+
+- **Dark stays the default and the no-JS fallback.** An inline script in
+  `BaseLayout` sets `data-theme` before first paint from localStorage, falling
+  back to `prefers-color-scheme`. There is no flash and no layout shift.
+- **The approved dark values are untouched.** Light is a new palette on a warm
+  off-white (`#F7F6F3`), not a pure white, with white cards over it.
+- **Accent had to be split.** `#FFB020` is 1.7:1 on an off-white ground, so it
+  is unusable as text there. `--accent` stays the brand fill (buttons, marks,
+  the chip) and a new `--accent-text` (`#8A5A00` in light) carries any accent
+  *text* or the focus ring. Five components were using the raw accent as a text
+  colour, including the 56px calculator result; all now use `--accent-text`.
+- **Light needed darker greys.** `--text-muted` and `--text-faint` are darker in
+  light mode than their dark-theme counterparts; the originals measured 3.7–3.8:1
+  on white. Both themes now pass 4.5:1 across every text/background pair on the
+  homepage (49 combinations checked, zero failures).
+- **Theme transitions are scoped to the switch.** A class is added to `<html>`
+  for 240ms and removed, so no transition cost is carried during scrolling.
+
+### Homepage
+
+- **No animation library.** The project had none, and adding Framer Motion would
+  mean adding React to a site that ships 0KB of JavaScript on most routes.
+  Motion is CSS transitions and keyframes; the JavaScript is one 4KB module for
+  scroll reveal, the hero loop, the demo and the country selector. Total blocking
+  time stays at 0ms and the page still scores 98–100 on mobile.
+- **The headline was kept.** The brief offered "Professional invoices. Made in
+  under a minute." The existing line is in the design files, has more voice and
+  follows the copy rules, so it stayed.
+- **The demo is wired to the real logic.** It calls the same `computeTotals`,
+  the same formatters and the same country data as the generator, so its numbers
+  cannot drift from the product. It is deliberately a controlled subset, not a
+  second generator.
+- **Facts are counted, not claimed.** The strip reads its numbers from the
+  shipped data (8 countries, 6 templates, 8 tools). There are no invented usage
+  statistics anywhere on the page.
+- **The country selector uses the real country files**, including the US case
+  where there is no national rate and the tax row disappears.
+- **The footer links only to pages that exist.** The brief suggested About,
+  Terms and Help; rather than ship dead links, the columns are Documents,
+  Calculators and More.
+- Superseded components (`HeroPaper`, `ToolGrid`, `CountryStrip`) were deleted
+  rather than left in place.
+
 ## Still open
 
 - **Word and Excel downloads.** `Templates.dc.html` says they are available and
@@ -95,5 +144,7 @@ The instruction was to follow the design files where the two disagree.
   cannot say where to send it. Add a real inbox before launch.
 - **Ad slots exist only on tool pages**, as drawn. If the homepage or gallery
   should carry units too, that is a design question.
+- **The homepage has no ad slot.** It is now the longest page on the site and
+  the obvious place for a unit, but the design never specified one.
 - **The project directory name ends in a space** (`Invoice tools `). It has not
   broken anything so far, but it is worth renaming before wiring up CI.

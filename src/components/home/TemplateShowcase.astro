@@ -1,0 +1,213 @@
+---
+import TemplateMini from '~/components/templates/TemplateMini.astro';
+import { templates } from '~/data/templates';
+---
+
+<section class="showcase">
+  <div class="shell">
+    <header class="showcase__head" data-reveal>
+      <div>
+        <h2>An invoice that looks like your business.</h2>
+        <p>Six layouts, all free. Pick one here and the generator opens with it applied.</p>
+      </div>
+      <a class="showcase__all" href="/invoice-templates">
+        Browse all templates
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h13M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </header>
+  </div>
+
+  {/* Full-bleed rail so the last card bleeds off the edge and invites a scroll. */}
+  <div class="showcase__rail" data-reveal>
+    <ul class="showcase__track">
+      {
+        templates.map((t) => (
+          <li class="tpl-card">
+            <a href={`/invoice-generator?template=${t.id}`} class="tpl-card__link">
+              <span class="tpl-card__stage">
+                <TemplateMini id={t.id} />
+              </span>
+              <span class="tpl-card__foot">
+                <span class="tpl-card__text">
+                  <strong>{t.name}</strong>
+                  <em>{t.blurb}</em>
+                </span>
+                <span class="tpl-card__use">
+                  Use
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h13M12 5l7 7-7 7"></path>
+                  </svg>
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .showcase { padding-block: var(--section-y); }
+
+  .showcase__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: var(--t-h2);
+    line-height: 1.06;
+    letter-spacing: var(--ls-snug);
+    max-width: 18ch;
+  }
+
+  .showcase__head p {
+    margin-top: 12px;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: var(--text-muted);
+    max-width: 52ch;
+  }
+
+  .showcase__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--t-body);
+    font-weight: 600;
+    color: var(--accent-text);
+    white-space: nowrap;
+  }
+
+  .showcase__all svg { transition: transform var(--dur) var(--ease-out); }
+  .showcase__all:hover svg { transform: translateX(3px); }
+
+  .showcase__rail {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Without this the first card snaps past the gutter on load. */
+    scroll-padding-left: var(--gutter);
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 14px;
+  }
+
+  .showcase__track {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0 var(--gutter);
+    list-style: none;
+    width: max-content;
+  }
+
+  .tpl-card { scroll-snap-align: start; }
+
+  .tpl-card__link {
+    display: flex;
+    flex-direction: column;
+    width: 268px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    background: var(--panel);
+    overflow: hidden;
+    color: var(--text);
+    transition:
+      border-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease-out);
+  }
+
+  .tpl-card__link:hover {
+    border-color: var(--accent-line);
+    transform: translateY(-4px);
+    color: var(--text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tpl-card__link:hover { transform: none; }
+  }
+
+  .tpl-card__stage {
+    height: 236px;
+    padding: 24px 24px 0;
+    background: var(--bg-deep);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  /*
+   * The thumbnail is authored at 240×280. It must not be allowed to flex-shrink
+   * or the proportions distort, so it keeps its size and is scaled instead.
+   * Scaling from the bottom keeps the header inside the stage.
+   */
+  .tpl-card__stage :global(.mini) {
+    flex-shrink: 0;
+    transform: scale(0.75);
+    transform-origin: bottom center;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .tpl-card__link:hover .tpl-card__stage :global(.mini) { transform: scale(0.77) translateY(-6px); }
+
+  .tpl-card__foot {
+    padding: 16px 18px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .tpl-card__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+  .tpl-card__text strong {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17px;
+  }
+
+  .tpl-card__text em {
+    font-style: normal;
+    font-size: var(--t-caption);
+    color: var(--text-muted);
+  }
+
+  .tpl-card__use {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 13px;
+    border-radius: var(--r-pill);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+    font-size: var(--t-caption);
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .tpl-card__link:hover .tpl-card__use {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .tpl-card__use svg { transition: transform var(--dur) var(--ease-out); }
+  .tpl-card__link:hover .tpl-card__use svg { transform: translateX(2px); }
+
+  @media (max-width: 720px) {
+    .showcase__head { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .tpl-card__link { width: 232px; }
+    .tpl-card__stage { height: 208px; }
+    .tpl-card__stage :global(.mini) { transform: scale(0.65); }
+    .tpl-card__link:hover .tpl-card__stage :global(.mini) { transform: scale(0.67) translateY(-5px); }
+  }
+</style>

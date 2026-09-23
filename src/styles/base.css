@@ -23,7 +23,7 @@ a {
   color: var(--text);
   text-decoration: none;
 }
-a:hover { color: var(--accent); }
+a:hover { color: var(--accent-text); }
 
 button, input, select, textarea { font-family: inherit; }
 
@@ -32,12 +32,53 @@ img, svg { display: block; max-width: 100%; }
 [hidden] { display: none !important; }
 
 :where(input, select, textarea, button, a, summary, details):focus-visible {
-  /* No radius here: the element keeps its own, so nothing shifts on focus. */
-  outline: 2px solid var(--accent);
+  /* No radius here: the element keeps its own, so nothing shifts on focus.
+     accent-text rather than accent: the raw amber is under 3:1 on a light ground. */
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
 }
 
 ::selection { background: var(--accent); color: var(--accent-ink); }
+
+/*
+ * Theme switching. Transitions are applied only while the class is on <html>
+ * and removed straight after, so nothing animates on first paint and no
+ * transition cost is carried during normal scrolling.
+ */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition:
+    background-color 200ms var(--ease),
+    border-color 200ms var(--ease),
+    color 200ms var(--ease),
+    fill 200ms var(--ease) !important;
+}
+
+/* Scroll reveal. Visible by default, so no-JS and pre-hydration both render. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A hairline grid, used to give large sections structure without decoration. */
+.rule {
+  height: 1px;
+  background: var(--hairline);
+  border: 0;
+  margin: 0;
+}
 
 .tnum { font-variant-numeric: tabular-nums; }
 

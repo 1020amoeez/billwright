@@ -1,0 +1,130 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+
+/** Editorial rather than a six-up grid: one argument leads, the rest support. */
+const points = [
+  {
+    title: 'No account, ever',
+    body: 'No email, no password, no "verify your address". Open the page and start typing.',
+  },
+  {
+    title: 'Private by default',
+    body: 'Invoices are built in your browser and saved to your own device. There is no server holding a copy.',
+  },
+  {
+    title: 'Currencies and tax that match you',
+    body: 'Eight countries, each with the right tax name, rate and number format already set.',
+  },
+  {
+    title: 'PDF you can send straight away',
+    body: 'Clean A4 output, no watermark, no branding of ours anywhere on it.',
+  },
+];
+---
+
+<section class="why">
+  <div class="shell why__inner">
+    <div class="why__lead" data-reveal>
+      <h2>Free because it is paid for by ads, not by your data.</h2>
+      <p>
+        Most invoice tools are a free trial for a subscription. This one is a tool. The whole thing
+        runs on your machine, which is also why it is fast.
+      </p>
+      <p class="why__note">
+        <Icon name="lock" size={17} stroke={2} />
+        Nothing you type is transmitted anywhere.
+      </p>
+    </div>
+
+    <ul class="why__list">
+      {
+        points.map((p, i) => (
+          <li class="why__item" data-reveal style={`--reveal-delay:${i * 55}ms`}>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .why {
+    padding-block: var(--section-y);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .why__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    gap: 72px;
+    align-items: start;
+  }
+
+  .why__lead { position: sticky; top: calc(var(--header-h) + 32px); }
+
+  h2 {
+    font-weight: 700;
+    font-size: var(--t-h2);
+    line-height: 1.08;
+    letter-spacing: var(--ls-snug);
+    max-width: 16ch;
+  }
+
+  .why__lead p {
+    margin-top: 18px;
+    font-size: var(--t-lead);
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 44ch;
+  }
+
+  .why__note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--t-small) !important;
+    color: var(--text-faint) !important;
+  }
+
+  .why__note :global(svg) { flex-shrink: 0; }
+
+  .why__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .why__item {
+    padding: 26px 0;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .why__item:first-child { border-top: 0; padding-top: 0; }
+  .why__item:last-child { padding-bottom: 0; }
+
+  h3 {
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .why__item p {
+    font-size: var(--t-small);
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 52ch;
+  }
+
+  @media (max-width: 900px) {
+    .why__inner { grid-template-columns: 1fr; gap: 40px; }
+    .why__lead { position: static; }
+    h2 { max-width: 22ch; }
+  }
+</style>

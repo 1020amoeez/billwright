@@ -1,86 +1,281 @@
 ---
 const steps = [
   {
-    title: '1. Fill in the details',
-    body: "Your business, the client, what you did and what it costs. Saved locally so next time it's already there.",
+    n: '01',
+    title: 'Fill in the details',
+    body: "Your business, the client, what you did and what it costs. Saved locally, so next time it is already there.",
   },
   {
-    title: '2. Watch it build',
+    n: '02',
+    title: 'Watch it build',
     body: 'The invoice updates as you type. Switch template or currency and see it change instantly.',
   },
   {
-    title: '3. Download the PDF',
+    n: '03',
+    title: 'Download the PDF',
     body: 'One click. Send it however you like. Nothing is uploaded, nothing is stored on our side.',
   },
 ];
 ---
 
-<section class="steps shell">
-  <h2>Three steps, no third one is "create an account".</h2>
-  <ol class="steps__grid">
-    {
-      steps.map((s, i) => (
-        <li class:list={['step', { 'step--first': i === 0 }]}>
-          <h3>{s.title}</h3>
-          <p>{s.body}</p>
-        </li>
-      ))
-    }
-  </ol>
+<section class="how">
+  <div class="shell">
+    <h2 data-reveal>Three steps, no third one is "create an account".</h2>
+
+    <ol class="how__list" data-how>
+      {
+        steps.map((s, i) => (
+          <li class="step" data-step data-reveal style={`--reveal-delay:${i * 70}ms`}>
+            <div class="step__rail" aria-hidden="true">
+              <span class="step__dot"></span>
+              {i < steps.length - 1 && <span class="step__line"></span>}
+            </div>
+
+            <div class="step__content">
+              <span class="step__n">{s.n}</span>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+
+              <div class="step__art" aria-hidden="true">
+                {i === 0 && (
+                  <div class="art art--form">
+                    <span class="art-field"><i></i></span>
+                    <span class="art-field art-field--b"><i></i></span>
+                    <span class="art-field art-field--c"><i></i></span>
+                  </div>
+                )}
+                {i === 1 && (
+                  <div class="art art--sheet">
+                    <span class="art-sheet-head"><i></i><em></em></span>
+                    <span class="art-sheet-row"></span>
+                    <span class="art-sheet-row"></span>
+                    <span class="art-sheet-total"></span>
+                  </div>
+                )}
+                {i === 2 && (
+                  <div class="art art--pdf">
+                    <span class="art-pdf">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M4 21h16"></path>
+                      </svg>
+                    </span>
+                    <span class="art-pdf-label">invoice-0042.pdf</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
 </section>
 
 <style>
-  .steps {
-    padding-block: 96px 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
+  .how { padding-block: var(--section-y); }
 
   h2 {
     font-weight: 700;
-    font-size: 36px;
-    letter-spacing: -0.02em;
+    font-size: var(--t-h2);
+    line-height: 1.08;
+    letter-spacing: var(--ls-snug);
+    max-width: 20ch;
+    margin-bottom: 44px;
   }
 
-  .steps__grid {
+  .how__list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 40px;
+    gap: 28px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .step {
+  /* Grid items stretch, so the art blocks can bottom-align into a clean row
+     even when the step copy runs to a different number of lines. */
+  .step { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+
+  .step__rail {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding-top: 20px;
-    border-top: 2px solid var(--border-strong);
+    align-items: center;
+    height: 12px;
   }
 
-  .step--first { border-top-color: var(--accent); }
+  .step__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    flex-shrink: 0;
+    transition: background-color var(--dur-slow) var(--ease);
+  }
+
+  .step__line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-left: 10px;
+    transform-origin: left;
+  }
+
+  /* The rail fills in as each step scrolls into view. */
+  .step.is-visible .step__dot { background: var(--accent); }
+
+  .step__line::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--accent-line);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 700ms var(--ease-out) 120ms;
+  }
+
+  .step.is-visible .step__line::after { transform: scaleX(1); }
+
+  .step__content { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+  .step__n {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--t-caption);
+    letter-spacing: 0.04em;
+    color: var(--accent-text);
+  }
 
   h3 {
     font-weight: 700;
-    font-size: 28px;
+    font-size: var(--t-h3);
+    letter-spacing: -0.015em;
   }
 
-  p {
-    font-size: 16px;
-    line-height: 1.55;
+  .step__content p {
+    font-size: var(--t-small);
+    line-height: 1.6;
     color: var(--text-muted);
+    max-width: 38ch;
+  }
+
+  .step__art {
+    margin-top: auto;
+    height: 132px;
+    padding: 18px;
+    border-radius: var(--r-card);
+    border: 1px solid var(--border);
+    background: var(--bg-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .art { width: 100%; display: flex; flex-direction: column; gap: 9px; }
+
+  /* Step 1 — fields filling */
+  .art-field {
+    height: 22px;
+    border-radius: 5px;
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    padding: 0 7px;
+  }
+
+  .art-field i {
+    display: block;
+    height: 4px;
+    width: 0;
+    border-radius: 2px;
+    background: var(--text-faint);
+  }
+
+  .step.is-visible .art-field i {
+    animation: fill-field 900ms var(--ease-out) forwards;
+  }
+
+  .step.is-visible .art-field--b i { animation-delay: 160ms; }
+  .step.is-visible .art-field--c i { animation-delay: 320ms; }
+
+  @keyframes fill-field {
+    to { width: 62%; }
+  }
+
+  .art-field--b i { --w: 44%; }
+
+  /* Step 2 — the sheet assembling */
+  .art--sheet {
+    background: var(--paper);
+    border-radius: 4px;
+    padding: 12px;
+    gap: 7px;
+    box-shadow: var(--elev-1);
+  }
+
+  .art-sheet-head { display: flex; justify-content: space-between; align-items: center; }
+  .art-sheet-head i { display: block; width: 44px; height: 6px; border-radius: 2px; background: var(--paper-ink); }
+  .art-sheet-head em { display: block; width: 14px; height: 14px; border-radius: 3px; background: var(--accent); }
+
+  .art-sheet-row {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--paper-fill);
+    transform-origin: left;
+    transform: scaleX(0.2);
+  }
+
+  .step.is-visible .art-sheet-row { animation: grow 620ms var(--ease-out) forwards; }
+  .step.is-visible .art-sheet-row:nth-of-type(3) { animation-delay: 140ms; }
+
+  @keyframes grow { to { transform: scaleX(1); } }
+
+  .art-sheet-total {
+    align-self: flex-end;
+    width: 46%;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--paper-ink);
+  }
+
+  /* Step 3 — the download */
+  .art--pdf { align-items: center; gap: 12px; }
+
+  .art-pdf {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step.is-visible .art-pdf { animation: pop 520ms var(--ease-out); }
+
+  @keyframes pop {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .art-pdf-label {
+    font-size: var(--t-caption);
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step.is-visible .art-field i { width: 62%; animation: none; }
+    .step.is-visible .art-sheet-row { transform: none; animation: none; }
+    .step.is-visible .art-pdf { animation: none; }
+    .step__line::after { transform: scaleX(1); transition: none; }
   }
 
   @media (max-width: 900px) {
-    .steps { padding-block: 64px 64px; gap: 32px; }
-    .steps__grid { grid-template-columns: 1fr; gap: 28px; }
-    h2 { font-size: 30px; }
-    h3 { font-size: 24px; }
-  }
-
-  @media (max-width: 520px) {
-    h2 { font-size: 26px; }
+    .how__list { grid-template-columns: 1fr; gap: 32px; }
+    .step__line { display: none; }
+    .step__content p { max-width: none; }
   }
 </style>

@@ -20,8 +20,27 @@ const { title, description, jsonLd, noindex, bodyClass } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script is:inline>
+      // Runs before first paint: no flash, no layout shift, no-JS stays dark.
+      (function () {
+        try {
+          var stored = localStorage.getItem('billwright:theme');
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark';
+          document.documentElement.dataset.theme = theme;
+        } catch (e) {
+          document.documentElement.dataset.theme = 'dark';
+        }
+        document.documentElement.classList.add('js');
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#101522" />
+    <meta name="theme-color" content="#101522" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F7F6F3" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <link

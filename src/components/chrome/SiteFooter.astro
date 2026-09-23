@@ -1,17 +1,56 @@
 ---
-const links = [
-  { href: '/guides', label: 'Guides' },
-  { href: '/privacy', label: 'Privacy' },
-  { href: '/contact', label: 'Contact' },
-];
+import Logo from './Logo.astro';
+import { tools } from '~/data/tools';
+
+const documents = tools.filter((t) => t.kind === 'document');
+const calculators = tools.filter((t) => t.kind === 'calculator');
+const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="site-footer__inner shell">
-    <p>Billwright. Free tools for people who send invoices.</p>
-    <nav class="site-footer__links" aria-label="Footer">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
-    </nav>
+  <div class="shell">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="site-footer__logo" href="/">
+          <Logo size={26} />
+          Billwright
+        </a>
+        <p>Free tools for people who send invoices.</p>
+        <p class="site-footer__note">
+          Built and exported in your browser. Nothing you type is uploaded.
+        </p>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Documents">
+        <h2>Documents</h2>
+        <ul>
+          {documents.map((t) => <li><a href={t.href}>{t.name}</a></li>)}
+          <li><a href="/invoice-templates">Invoice templates</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Calculators">
+        <h2>Calculators</h2>
+        <ul>
+          {calculators.map((t) => <li><a href={t.href}>{t.name}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="More">
+        <h2>More</h2>
+        <ul>
+          <li><a href="/calculators">All tools</a></li>
+          <li><a href="/guides">Guides</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>© {year} Billwright</p>
+      <p class="site-footer__made">Free to use, paid for by ads on the calculator pages.</p>
+    </div>
   </div>
 </footer>
 
@@ -19,36 +58,89 @@ const links = [
   .site-footer {
     margin-top: auto;
     border-top: 1px solid var(--hairline);
+    background: var(--bg-raised);
   }
 
-  .site-footer__inner {
-    padding-block: 40px;
+  .site-footer__top {
+    padding-block: 56px 44px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+
+  .site-footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 34ch;
+  }
+
+  .site-footer__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+
+  .site-footer__brand p {
+    font-size: var(--t-small);
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .site-footer__note { color: var(--text-faint) !important; font-size: var(--t-caption) !important; }
+
+  .site-footer__col h2 {
+    font-family: var(--font-body);
+    font-size: var(--t-caption);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 14px;
+  }
+
+  .site-footer__col ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .site-footer__col a {
+    font-size: var(--t-small);
+    color: var(--text-muted);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .site-footer__col a:hover { color: var(--accent-text); }
+
+  .site-footer__bottom {
+    padding-block: 20px 28px;
+    border-top: 1px solid var(--hairline);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 24px;
-    font-size: 14px;
-    color: var(--text-muted);
+    gap: 20px;
+    font-size: var(--t-caption);
+    color: var(--text-faint);
   }
 
-  .site-footer__links {
-    display: flex;
-    gap: 28px;
-  }
-
-  .site-footer__links a {
-    color: var(--text-muted);
-  }
-
-  @media (max-width: 720px) {
-    .site-footer__inner {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
+  @media (max-width: 900px) {
+    .site-footer__top {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 36px 28px;
     }
-    .site-footer__links {
-      gap: 24px;
-      flex-wrap: wrap;
-    }
+    .site-footer__brand { grid-column: 1 / -1; max-width: none; }
+  }
+
+  @media (max-width: 560px) {
+    .site-footer__top { padding-block: 40px 32px; }
+    .site-footer__bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
   }
 </style>

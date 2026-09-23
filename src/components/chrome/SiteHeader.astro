@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
@@ -14,7 +15,7 @@ const isActive = (href: string) =>
   path === href || (href === '/calculators' && path.endsWith('-calculator'));
 ---
 
-<header class="site-header">
+<header class="site-header" id="site-header">
   <div class="site-header__inner shell">
     <a class="brand" href="/">
       <Logo size={30} />
@@ -24,32 +25,54 @@ const isActive = (href: string) =>
     <nav class="site-nav" aria-label="Main">
       {
         links.map((l) => (
-          <a href={l.href} class:list={['site-nav__link', { 'is-active': isActive(l.href) }]} aria-current={isActive(l.href) ? 'page' : undefined}>
+          <a
+            href={l.href}
+            class:list={['site-nav__link', { 'is-active': isActive(l.href) }]}
+            aria-current={isActive(l.href) ? 'page' : undefined}
+          >
             {l.label}
           </a>
         ))
       }
     </nav>
 
-    <a class="btn-accent site-header__cta" href="/invoice-generator">Make an invoice</a>
+    <div class="site-header__end">
+      <ThemeToggle />
+      <a class="btn-accent site-header__cta" href="/invoice-generator">Make an invoice</a>
 
-    <details class="menu">
-      <summary aria-label="Menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16"></path>
-        </svg>
-      </summary>
-      <div class="menu__panel">
-        {links.map((l) => <a href={l.href} class="menu__link">{l.label}</a>)}
-        <a class="btn-accent menu__cta" href="/invoice-generator">Make an invoice</a>
-      </div>
-    </details>
+      <details class="menu">
+        <summary aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </summary>
+        <div class="menu__panel">
+          {links.map((l) => <a href={l.href} class="menu__link">{l.label}</a>)}
+          <a class="btn-accent menu__cta" href="/invoice-generator">Make an invoice</a>
+        </div>
+      </details>
+    </div>
   </div>
 </header>
 
 <style>
   .site-header {
-    border-bottom: 1px solid var(--hairline);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--header-bg);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  /* The rule only appears once the page has moved, so the hero starts clean. */
+  .site-header:global(.is-stuck) {
+    border-bottom-color: var(--hairline);
+    box-shadow: var(--elev-1);
   }
 
   .site-header__inner {
@@ -76,26 +99,53 @@ const isActive = (href: string) =>
     display: flex;
     align-items: center;
     min-height: 44px;
-    gap: 36px;
-    font-size: 15px;
+    gap: 32px;
+    font-size: var(--t-small);
     font-weight: 500;
   }
 
+  .site-nav__link {
+    position: relative;
+    color: var(--text-muted);
+    padding-block: 4px;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .site-nav__link:hover { color: var(--text); }
+
+  /* Active state is an underline as well as a colour, never colour alone. */
+  .site-nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
   .site-nav__link.is-active {
-    color: var(--accent);
+    color: var(--text);
+  }
+
+  .site-nav__link.is-active::after { transform: scaleX(1); }
+
+  .site-header__end {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .site-header__cta {
-    height: 44px;
-    padding: 0 20px;
-    font-size: 15px;
+    height: 40px;
+    padding: 0 18px;
+    font-size: var(--t-small);
   }
 
-  /* Disclosure menu — no equivalent in the 1440 design, added for narrow screens */
-  .menu {
-    display: none;
-    position: relative;
-  }
+  .menu { display: none; position: relative; }
 
   .menu > summary {
     width: 44px;
@@ -103,28 +153,21 @@ const isActive = (href: string) =>
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border);
     border-radius: var(--r-btn);
     color: var(--text);
     cursor: pointer;
     list-style: none;
   }
 
-  .menu > summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .menu[open] > summary {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
+  .menu > summary::-webkit-details-marker { display: none; }
+  .menu[open] > summary { border-color: var(--accent); color: var(--accent-text); }
 
   .menu__panel {
     position: absolute;
     right: 0;
     top: calc(100% + 12px);
     z-index: 40;
-    width: max-content;
     min-width: 240px;
     padding: 12px;
     display: flex;
@@ -133,6 +176,7 @@ const isActive = (href: string) =>
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: var(--r-card);
+    box-shadow: var(--elev-2);
   }
 
   .menu__link {
@@ -141,32 +185,32 @@ const isActive = (href: string) =>
     min-height: 44px;
     padding: 0 12px;
     border-radius: var(--r-input);
-    font-size: 16px;
+    font-size: var(--t-body);
     font-weight: 500;
+    color: var(--text-muted);
   }
 
-  .menu__cta {
-    height: 44px;
-    margin-top: 8px;
-    justify-content: center;
-    font-size: 15px;
-  }
+  .menu__link:hover { background: var(--bg); color: var(--text); }
 
-  @media (max-width: 1000px) {
-    .site-nav {
-      display: none;
-    }
-    .menu {
-      display: block;
-    }
+  .menu__cta { height: 44px; margin-top: 8px; }
+
+  @media (max-width: 1040px) {
+    .site-nav { display: none; }
+    .menu { display: block; }
   }
 
   @media (max-width: 560px) {
-    .site-header__cta {
-      display: none;
-    }
-    .brand {
-      font-size: 19px;
-    }
+    .site-header__cta { display: none; }
+    .brand { font-size: 19px; }
   }
 </style>
+
+<script>
+  // One passive listener toggling a class — no scroll-linked layout work.
+  const header = document.querySelector('#site-header');
+  if (header) {
+    const onScroll = () => header.classList.toggle('is-stuck', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

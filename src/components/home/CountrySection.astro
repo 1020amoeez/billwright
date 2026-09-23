@@ -1,0 +1,249 @@
+---
+import { countries, defaultCountry } from '~/data/countries';
+
+/** The sample subtotal every panel is calculated from. */
+const SUBTOTAL = 4500;
+
+const money = (n: number, currency: string) =>
+  `${currency} ${new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(n)}`;
+
+const first = defaultCountry;
+const firstTax = first.taxRate ?? 0;
+---
+
+<section class="countries">
+  <div class="shell">
+    <div class="countries__box">
+      <header class="countries__head" data-reveal>
+        <h2>Built for where you actually do business.</h2>
+        <p>
+          Pick your country and the invoice picks up the right tax line, currency format and
+          required fields. GST, VAT or sales tax, without you looking it up.
+        </p>
+      </header>
+
+      <div class="countries__body" data-countries data-subtotal={SUBTOTAL}>
+        <div class="countries__chips" role="tablist" aria-label="Country">
+          {
+            countries.map((c) => (
+              <button
+                type="button"
+                role="tab"
+                class:list={['chip', { 'is-active': c.code === first.code }]}
+                aria-selected={c.code === first.code ? 'true' : 'false'}
+                tabindex={c.code === first.code ? 0 : -1}
+                data-country={c.code}
+                data-name={c.name}
+                data-currency={c.currency}
+                data-tax-label={c.taxLabel}
+                data-rate={c.taxRate === null ? '' : String(c.taxRate)}
+                data-taxid={c.taxIdLabel}
+              >
+                {c.name}
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="countries__panel" role="tabpanel" aria-live="polite">
+          <dl class="facts-grid">
+            <div class="fact-cell">
+              <dt>Currency</dt>
+              <dd data-out="currency">{first.currency}</dd>
+            </div>
+            <div class="fact-cell">
+              <dt>Tax is called</dt>
+              <dd data-out="taxLabel">{first.taxLabel}</dd>
+            </div>
+            <div class="fact-cell">
+              <dt>Standard rate</dt>
+              <dd data-out="rate">{first.taxRate === null ? 'You set it' : `${first.taxRate}%`}</dd>
+            </div>
+            <div class="fact-cell">
+              <dt>Tax number</dt>
+              <dd data-out="taxid">{first.taxIdLabel}</dd>
+            </div>
+          </dl>
+
+          <div class="sample">
+            <span class="sample__cap">How the total reads on the invoice</span>
+            <div class="sample__sheet">
+              <div class="sample__row">
+                <span>Subtotal</span>
+                <span class="tnum" data-out="subtotal">{money(SUBTOTAL, first.currency)}</span>
+              </div>
+              <div class="sample__row" data-out-taxrow>
+                <span data-out="taxline">{`${first.taxLabel} ${firstTax}%`}</span>
+                <span class="tnum" data-out="taxamount">{money(SUBTOTAL * (firstTax / 100), first.currency)}</span>
+              </div>
+              <div class="sample__row sample__row--total">
+                <span>Total</span>
+                <span class="tnum" data-out="total">{money(SUBTOTAL * (1 + firstTax / 100), first.currency)}</span>
+              </div>
+            </div>
+            <p class="sample__note" data-out="note">
+              Rates are the standard national rate. Reduced rates and exemptions are yours to apply.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .countries { padding-block: var(--section-y); }
+
+  .countries__box {
+    padding: 48px;
+    border-radius: var(--r-section-lg);
+    background: var(--panel);
+    border: 1px solid var(--border);
+  }
+
+  .countries__head { max-width: 640px; margin-bottom: 32px; }
+
+  h2 {
+    font-weight: 700;
+    font-size: var(--t-h2);
+    line-height: 1.08;
+    letter-spacing: var(--ls-snug);
+  }
+
+  .countries__head p {
+    margin-top: 14px;
+    font-size: var(--t-lead);
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .countries__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .chip {
+    height: 40px;
+    padding: 0 16px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: var(--t-small);
+    cursor: pointer;
+    transition:
+      color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+
+  .chip:hover { color: var(--text); border-color: var(--text-faint); }
+
+  /* Selected reads as a fill and a weight change, not colour alone. */
+  .chip.is-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+
+  .countries__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    gap: 40px;
+    align-items: start;
+  }
+
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    overflow: hidden;
+  }
+
+  .fact-cell {
+    padding: 20px;
+    background: var(--bg-raised);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fact-cell dt {
+    font-size: var(--t-caption);
+    color: var(--text-muted);
+  }
+
+  .fact-cell dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+
+  .sample { display: flex; flex-direction: column; gap: 10px; }
+
+  .sample__cap {
+    font-size: var(--t-caption);
+    color: var(--text-muted);
+  }
+
+  .sample__sheet {
+    padding: 18px 20px;
+    border-radius: var(--r-card);
+    background: var(--paper);
+    color: var(--paper-ink);
+    border: 1px solid var(--paper-border);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 13px;
+  }
+
+  .sample__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--paper-muted);
+  }
+
+  .sample__row[hidden] { display: none; }
+
+  .sample__row--total {
+    margin-top: 5px;
+    padding-top: 10px;
+    border-top: 1.5px solid var(--paper-ink);
+    color: var(--paper-ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .sample__note {
+    font-size: var(--t-caption);
+    line-height: 1.5;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 900px) {
+    .countries__box { padding: 32px 24px; }
+    .countries__panel { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  @media (max-width: 520px) {
+    .facts-grid { grid-template-columns: 1fr; }
+    .fact-cell dd { font-size: 19px; }
+    .chip { height: 44px; }
+  }
+</style>

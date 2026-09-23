@@ -1,37 +1,43 @@
-/* Billwright design tokens — see design/DESIGN.md */
+/*
+ * Billwright design tokens — see design/DESIGN.md
+ *
+ * Dark is the default and the primary appearance. An inline script in
+ * BaseLayout sets data-theme before first paint, so there is no flash and no
+ * layout shift. Without JavaScript the page stays dark, which is the design.
+ */
+
 :root {
-  /* Surfaces */
-  --bg: #101522;
-  --bg-deep: #0B0F19;
-  --panel: #171D2C;
-  --border: #2B3448;
-  --border-strong: #3A4459;
-  --hairline: #1F2738;
+  /* ---- Brand constants, identical in both themes ---- */
+  --accent: #FFB020;      /* the fill: buttons, marks, highlights */
+  --accent-ink: #101522;  /* text on an accent fill, never white */
 
-  /* Text */
-  --text: #F3F5F9;
-  --text-body: #C9CFDB;   /* long-form prose, from Tool.dc.html */
-  --text-muted: #A9B1C3;
-  --text-faint: #7E8698;  /* placeholder labels; lightened for 4.5:1 */
-
-  /* Accent */
-  --accent: #FFB020;
-  --accent-ink: #101522;  /* text on accent, never white */
-
-  /* Paper */
+  /* Paper is paper in both themes — an invoice is a white sheet. */
   --paper: #FFFFFF;
   --paper-ink: #151A28;
   --paper-muted: #66708A;
   --paper-line: #E6E8EF;
-  --paper-fill: #D9DCE5;  /* mini-preview bars */
+  --paper-fill: #D9DCE5;
   --paper-fill-2: #EEF0F5;
   --paper-fill-3: #F7F8FB;
 
-  /* Type */
+  /* ---- Type ---- */
   --font-display: 'Bricolage Grotesque', 'Trebuchet MS', system-ui, sans-serif;
   --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Radius */
+  --t-display: clamp(2.75rem, 1.6rem + 4.2vw, 4.5rem);   /* 44 → 72 */
+  --t-h1: clamp(2rem, 1.35rem + 2.4vw, 3.5rem);          /* 32 → 56 */
+  --t-h2: clamp(1.75rem, 1.3rem + 1.7vw, 2.75rem);       /* 28 → 44 */
+  --t-h3: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);      /* 22 → 28 */
+  --t-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);     /* 17 → 20 */
+  --t-body: 1rem;
+  --t-small: 0.9375rem;
+  --t-caption: 0.8125rem;
+
+  --lh-tight: 1.04;
+  --ls-tight: -0.03em;
+  --ls-snug: -0.02em;
+
+  /* ---- Radius ---- */
   --r-input: 8px;
   --r-input-lg: 10px;
   --r-btn: 10px;
@@ -42,20 +48,91 @@
   --r-paper: 4px;
   --r-pill: 999px;
 
-  /* Layout */
+  /* ---- Layout ---- */
   --gutter: 120px;
   --gutter-app: 40px;
   --header-h: 80px;
   --header-app-h: 72px;
+  --section-y: 96px;
 
-  /* Elevation — paper only */
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur: 220ms;
+  --dur-slow: 420ms;
+}
+
+/* ================= Dark (default) ================= */
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #101522;
+  --bg-deep: #0B0F19;
+  --bg-raised: #131926;
+  --panel: #171D2C;
+  --panel-hover: #1C2334;
+  --border: #2B3448;
+  --border-strong: #3A4459;
+  --hairline: #1F2738;
+
+  --text: #F3F5F9;
+  --text-body: #C9CFDB;
+  --text-muted: #A9B1C3;
+  --text-faint: #7E8698;
+
+  /* Accent is legible as text on a dark ground, so it is the accent itself. */
+  --accent-text: #FFB020;
+  --accent-soft: rgba(255, 176, 32, 0.12);
+  --accent-line: rgba(255, 176, 32, 0.32);
+
+  --paper-border: transparent;
   --shadow-paper-hero: 0 40px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
   --shadow-paper: 0 30px 60px rgba(0, 0, 0, 0.6);
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --elev-2: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --header-bg: rgba(16, 21, 34, 0.72);
+  --grid-line: rgba(255, 255, 255, 0.04);
+}
+
+/* ================= Light ================= */
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #F7F6F3;        /* warm off-white, not pure white */
+  --bg-deep: #ECEAE5;   /* stage behind the paper */
+  --bg-raised: #FDFCFA;
+  --panel: #FFFFFF;
+  --panel-hover: #FBFAF8;
+  --border: #E4E1DA;
+  --border-strong: #D0CCC2;
+  --hairline: #E8E5DE;
+
+  --text: #131826;
+  --text-body: #3C4454;
+  /* Both are darkened from their dark-theme counterparts: the same greys that
+     clear 4.5:1 on #101522 fall well under it on an off-white ground. */
+  --text-muted: #4F5768;
+  --text-faint: #666D80;
+
+  /* #FFB020 on white is 1.7:1 — unusable as text. This is the readable cut. */
+  --accent-text: #8A5A00;
+  --accent-soft: rgba(255, 176, 32, 0.16);
+  --accent-line: rgba(138, 90, 0, 0.28);
+
+  --paper-border: #E4E1DA;
+  --shadow-paper-hero: 0 24px 56px rgba(30, 25, 10, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --shadow-paper: 0 18px 40px rgba(30, 25, 10, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --elev-1: 0 1px 2px rgba(20, 20, 20, 0.06);
+  --elev-2: 0 12px 28px rgba(30, 25, 10, 0.1);
+  --header-bg: rgba(247, 246, 243, 0.78);
+  --grid-line: rgba(0, 0, 0, 0.04);
 }
 
 @media (max-width: 1100px) {
-  :root { --gutter: 48px; }
+  :root { --gutter: 48px; --section-y: 72px; }
 }
 @media (max-width: 720px) {
-  :root { --gutter: 20px; --gutter-app: 16px; }
+  :root { --gutter: 20px; --gutter-app: 16px; --section-y: 56px; }
 }

@@ -1,9 +1,14 @@
 ---
 import SiteLayout from '~/layouts/SiteLayout.astro';
 import Hero from '~/components/home/Hero.astro';
-import ToolGrid from '~/components/home/ToolGrid.astro';
-import CountryStrip from '~/components/home/CountryStrip.astro';
+import FactStrip from '~/components/home/FactStrip.astro';
+import LiveDemo from '~/components/home/LiveDemo.astro';
+import ToolsSection from '~/components/home/ToolsSection.astro';
+import TemplateShowcase from '~/components/home/TemplateShowcase.astro';
+import CountrySection from '~/components/home/CountrySection.astro';
 import HowItWorks from '~/components/home/HowItWorks.astro';
+import WhySection from '~/components/home/WhySection.astro';
+import FinalCta from '~/components/home/FinalCta.astro';
 
 const jsonLd = [
   {
@@ -26,7 +31,16 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <Hero />
-  <ToolGrid />
-  <CountryStrip />
+  <FactStrip />
+  <LiveDemo />
+  <ToolsSection />
+  <TemplateShowcase />
+  <CountrySection />
   <HowItWorks />
+  <WhySection />
+  <FinalCta />
 </SiteLayout>
+
+<script>
+  import '~/scripts/home';
+</script>

@@ -1,0 +1,312 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+import { tools } from '~/data/tools';
+
+/** The generator leads the grid at double width; the rest follow evenly. */
+const lead = tools.find((t) => t.href === '/invoice-generator')!;
+const rest = tools.filter((t) => t.href !== lead.href && t.onHomepage);
+const extra = tools.filter((t) => !t.onHomepage);
+---
+
+<section class="tools">
+  <div class="shell">
+    <header class="tools__head" data-reveal>
+      <h2>Everything you need to get paid.</h2>
+      <a class="tools__all" href="/calculators">
+        See all tools
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h13M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </header>
+
+    <div class="tools__grid">
+      <a class="tool tool--lead" href={lead.href} data-reveal>
+        <div class="tool__body">
+          <span class="tool__icon"><Icon name={lead.icon} size={24} stroke={1.8} /></span>
+          <div class="tool__text">
+            <h3>{lead.name}</h3>
+            <p>{lead.blurb}</p>
+          </div>
+          <span class="tool__go">
+            Open it
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h13M12 5l7 7-7 7"></path>
+            </svg>
+          </span>
+        </div>
+
+        {/* A miniature of the thing itself, rather than an illustration. */}
+        <div class="tool__preview" aria-hidden="true">
+          <div class="tp-sheet">
+            <div class="tp-head"><span class="tp-word">Invoice</span><i class="tp-mark"></i></div>
+            <div class="tp-line tp-line--lg"></div>
+            <div class="tp-line"></div>
+            <div class="tp-rows">
+              <i></i><i></i><i></i>
+            </div>
+            <div class="tp-total"></div>
+          </div>
+        </div>
+      </a>
+
+      {
+        rest.map((tool, i) => (
+          <a class="tool" href={tool.href} data-reveal style={`--reveal-delay:${(i + 1) * 40}ms`}>
+            <div class="tool__body">
+              <span class="tool__icon"><Icon name={tool.icon} size={22} stroke={1.8} /></span>
+              <div class="tool__text">
+                <h3>{tool.name}</h3>
+                <p>{tool.blurb}</p>
+              </div>
+              <span class="tool__go">
+                Open it
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h13M12 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="tools__more" data-reveal>
+      <span>Also free:</span>
+      {extra.map((t) => <a href={t.href}>{t.name}</a>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tools { padding-block: var(--section-y); }
+
+  .tools__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: var(--t-h2);
+    line-height: 1.06;
+    letter-spacing: var(--ls-snug);
+    max-width: 16ch;
+  }
+
+  .tools__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--t-body);
+    font-weight: 600;
+    color: var(--accent-text);
+    white-space: nowrap;
+  }
+
+  .tools__all svg { transition: transform var(--dur) var(--ease-out); }
+  .tools__all:hover svg { transform: translateX(3px); }
+
+  .tools__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .tool {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-radius: var(--r-card);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    overflow: hidden;
+    transition:
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease-out);
+  }
+
+  .tool:hover {
+    border-color: var(--accent-line);
+    background: var(--panel-hover);
+    transform: translateY(-3px);
+    color: var(--text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tool:hover { transform: none; }
+  }
+
+  .tool--lead {
+    grid-column: span 2;
+    grid-row: span 2;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 24px;
+    padding: 28px;
+  }
+
+  .tool__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tool--lead .tool__body { justify-content: center; max-width: 300px; }
+
+  .tool__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-input-lg);
+    background: var(--accent-soft);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .tool:hover .tool__icon { transform: translateY(-2px) scale(1.04); }
+
+  .tool__text { display: flex; flex-direction: column; gap: 6px; }
+
+  h3 {
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+
+  .tool--lead h3 { font-size: var(--t-h3); }
+
+  .tool__text p {
+    font-size: var(--t-small);
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .tool__go {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: var(--t-caption);
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .tool:hover .tool__go { color: var(--accent-text); }
+  .tool__go svg { transition: transform var(--dur) var(--ease-out); }
+  .tool:hover .tool__go svg { transform: translateX(3px); }
+
+  /* Lead card miniature */
+  .tool__preview {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin: -28px -28px -28px 0;
+    padding: 30px 24px 0;
+    background: var(--bg-deep);
+    border-left: 1px solid var(--border);
+  }
+
+  .tp-sheet {
+    width: 100%;
+    max-width: 210px;
+    padding: 16px;
+    background: var(--paper);
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow-paper);
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .tool--lead:hover .tp-sheet { transform: translateY(-6px); }
+
+  .tp-head { display: flex; justify-content: space-between; align-items: center; }
+
+  .tp-word {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--paper-ink);
+  }
+
+  .tp-mark { width: 14px; height: 14px; border-radius: 3px; background: var(--accent); }
+
+  .tp-line { height: 3px; width: 60%; border-radius: 2px; background: var(--paper-fill); }
+  .tp-line--lg { width: 78%; background: var(--paper-ink); height: 4px; }
+
+  .tp-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 8px;
+    border-top: 1px solid var(--paper-ink);
+  }
+
+  .tp-rows i { height: 3px; border-radius: 2px; background: var(--paper-fill); }
+  .tp-rows i:nth-child(2) { width: 86%; }
+  .tp-rows i:nth-child(3) { width: 72%; }
+
+  .tp-total {
+    align-self: flex-end;
+    width: 52%;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--paper-ink);
+  }
+
+  .tools__more {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    font-size: var(--t-small);
+    color: var(--text-muted);
+  }
+
+  .tools__more a {
+    color: var(--text-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--border-strong);
+  }
+
+  .tools__more a:hover { color: var(--accent-text); text-decoration-color: var(--accent); }
+
+  @media (max-width: 1000px) {
+    .tools__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tool--lead { grid-column: span 2; grid-row: auto; }
+  }
+
+  @media (max-width: 720px) {
+    .tools__head { flex-direction: column; align-items: flex-start; gap: 14px; }
+    h2 { max-width: 20ch; }
+    .tool--lead { flex-direction: column; padding: 24px; }
+    .tool--lead .tool__body { max-width: none; }
+    .tool__preview {
+      margin: 8px -24px -24px;
+      padding: 22px 24px 0;
+      border-left: 0;
+      border-top: 1px solid var(--border);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .tools__grid { grid-template-columns: 1fr; }
+    .tool--lead { grid-column: span 1; }
+  }
+</style>
