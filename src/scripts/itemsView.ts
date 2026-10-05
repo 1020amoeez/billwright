@@ -13,7 +13,7 @@ export function renderItemRow(item: LineItem, index: number): string {
   const n = index + 1;
   return `<div class="item-row" data-item-id="${item.id}">
   <input type="text" value="${esc(item.description)}" data-field="description"
-    aria-label="Item ${n} description" placeholder="What you did">
+    aria-label="Item ${n} name" placeholder="Item name">
   <input type="text" inputmode="decimal" value="${esc(item.qty)}" data-field="qty"
     aria-label="Item ${n} quantity" class="item-row__num">
   <input type="text" inputmode="decimal" value="${esc(item.unitPrice)}" data-field="unitPrice"

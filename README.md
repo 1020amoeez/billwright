@@ -43,36 +43,57 @@ national rate).
 **An invoice template** — add it to `src/data/templates.ts`, a thumbnail branch
 in `TemplateMini.astro`, and a `.paper--<id>` block in `src/styles/paper.css`.
 
-## AI draft (optional)
+## AI assist (optional)
 
-The generator has a "Describe the work" box that turns a sentence into line
-items. It is the only part of the site that makes a network request with
-anything the user typed, it runs only on an explicit button press, and it sends
-that sentence alone — never the client, the business details, the existing
-items or the totals. Amounts are still totalled locally by `computeTotals`.
+Two boxes in the generator use Claude Haiku 4.5, and both act on a pause in
+typing rather than a button:
 
-It is a Cloudflare Pages Function (`functions/api/draft-items.ts`) calling
-Claude Haiku 4.5 with structured outputs, so the API key never reaches the
-browser. Roughly $0.0014 per draft with the system prompt cached.
+- **Describe the work** (`functions/api/draft-items.ts`) turns a sentence into
+  line items. Each redraft replaces the rows the last one made; a row edited by
+  hand is kept. Amounts are still totalled locally by `computeTotals`.
+- **Describe the look** (`functions/api/style.ts`) sets the accent colour,
+  heading colour, font and template ("make it navy with a serif font"). Colour
+  names, fonts and template names are read instantly on the device
+  (`src/scripts/lookWords.ts`) and work with no key; AI handles the rest. Any
+  heading colour is darkened until it reads on white (`src/scripts/look.ts`).
 
-**The site works without it.** With no key configured the endpoint returns 503
-and the box reports that drafting is unavailable; every other feature is
-unaffected.
+Only the box's text leaves the browser (the style box adds the current colours
+and template), never the client, the business details or the totals. The API
+key stays on the server. Roughly $0.0014 per call.
+
+**Logo** (`src/scripts/brand.ts`): an uploaded PNG, JPG or SVG is downscaled
+in the browser and stored under its own key, shared by all three document
+types and kept by "Start a new". SVGs are rasterised because pdf-lib embeds
+only PNG and JPEG. With no logo the business's initials show on the accent.
+An optional watermark puts a large faint copy of the logo (7% opacity) behind
+the first sheet in the preview and every page of the PDF. "Match colours"
+reads the logo's main colour; it runs on upload only while the
+colours are still the defaults. The image is never sent anywhere — the style
+box sends the logo's size and visibility, not the picture.
+
+**The site works without it.** With no key configured the endpoints return 503
+and the boxes say so; every other feature is unaffected.
 
 ### Setting it up
 
 ```bash
 # Local
-cp .dev.vars.example .dev.vars   # add your key, keep AI_ALLOW_UNLIMITED=true
-npm run dev:functions            # http://localhost:8788
+cp .dev.vars.example .dev.vars   # paste your key after ANTHROPIC_API_KEY=
+npm run dev                      # http://localhost:4321
 ```
+
+`npm run dev` runs `functions/api/*` itself (a dev-only Vite middleware in
+`astro.config.mjs`), re-reading `.dev.vars` on each request, so no restart is
+needed after adding the key. `npm run dev:functions` still runs the real
+Pages runtime through wrangler.
 
 For production, in the Cloudflare Pages project:
 
 1. **Settings → Variables → Add secret**: `ANTHROPIC_API_KEY`
 2. **Workers & Pages → KV → Create namespace**, then bind it to the Pages
    project under **Settings → Bindings** with the variable name `AI_LIMITS`
-3. Optionally set `AI_DAILY_LIMIT` (defaults to 20 drafts per IP per day)
+3. Optionally set `AI_DAILY_LIMIT` (defaults to 100 AI calls per IP per day,
+   shared by both boxes — live typing makes more calls than a button did)
 
 The quota **fails closed**: without the `AI_LIMITS` binding the endpoint
 returns 503 rather than billing your key with no ceiling. `AI_ALLOW_UNLIMITED`

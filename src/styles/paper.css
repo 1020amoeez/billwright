@@ -15,6 +15,8 @@
 }
 
 .paper {
+  position: relative;
+  isolation: isolate;
   width: 620px;
   /* One A4 tall by default; grows in whole sheets when the items overflow. */
   min-height: 876px;
@@ -26,7 +28,13 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  font-family: var(--font-body);
+  /* The look: the generator sets these inline from the document's colours and
+     font. Everywhere else the sheet falls back to the house style. */
+  --pp-accent: var(--accent);
+  --pp-heading: var(--paper-ink);
+  --pp-font-body: var(--font-body);
+  --pp-font-display: var(--font-display);
+  font-family: var(--pp-font-body);
   font-size: 14px;
 }
 
@@ -43,7 +51,8 @@
 }
 
 .pp-word {
-  font-family: var(--font-display);
+  color: var(--pp-heading);
+  font-family: var(--pp-font-display);
   font-weight: 700;
   font-size: 40px;
   letter-spacing: -0.02em;
@@ -64,12 +73,49 @@
   gap: 6px;
 }
 
+/* Watermark: the logo, large and faint, centred on the first A4 sheet.
+   It sits under everything else, so it never blocks text or clicks. */
+.pp-watermark {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 438px; /* half of one A4 sheet, so a longer invoice keeps it on page 1 */
+  width: 380px;
+  height: 420px;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Initials, shown until a logo is uploaded */
 .pp-mark {
   width: 52px;
   height: 52px;
   border-radius: 8px;
-  background: var(--accent);
+  background: var(--pp-accent);
+  color: var(--pp-on-accent, var(--paper-ink));
+  display: grid;
+  place-items: center;
+  font-family: var(--pp-font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.01em;
+  line-height: 1;
 }
+.pp-mark--small { width: 36px; height: 36px; border-radius: 6px; font-size: 14px; }
+.pp-mark--large { width: 72px; height: 72px; border-radius: 10px; font-size: 27px; }
+
+/* An uploaded logo keeps its own shape; only its height is set */
+.pp-logo {
+  display: block;
+  width: auto;
+  height: 52px;
+  max-width: 200px;
+  object-fit: contain;
+}
+.pp-logo--small { height: 36px; max-width: 150px; }
+.pp-logo--large { height: 72px; max-width: 240px; }
 
 .pp-brand-name {
   font-weight: 600;
@@ -91,7 +137,7 @@
 .pp-table {
   display: flex;
   flex-direction: column;
-  border-top: 2px solid var(--paper-ink);
+  border-top: 2px solid var(--pp-heading);
 }
 
 .pp-row {
@@ -131,11 +177,11 @@
 
 .pp-total--grand {
   padding-top: 12px;
-  border-top: 2px solid var(--paper-ink);
-  font-family: var(--font-display);
+  border-top: 2px solid var(--pp-heading);
+  font-family: var(--pp-font-display);
   font-weight: 700;
   font-size: 24px;
-  color: var(--paper-ink);
+  color: var(--pp-heading);
 }
 
 .pp-foot {
@@ -157,9 +203,12 @@
 .paper--bold-header .pp-head {
   margin: 0 -56px 0;
   padding: 26px 56px;
-  background: var(--paper-ink);
+  background: var(--pp-heading);
   color: var(--paper);
   align-items: center;
+}
+.paper--bold-header .pp-word {
+  color: var(--paper);
 }
 .paper--bold-header .pp-meta {
   color: rgba(255, 255, 255, 0.62);
@@ -167,8 +216,15 @@
 .paper--bold-header .pp-brand-name {
   color: var(--paper);
 }
+.paper--bold-header .pp-logo {
+  /* A white chip, so dark logos still show on the dark band */
+  box-sizing: content-box;
+  padding: 6px;
+  border-radius: 6px;
+  background: var(--paper);
+}
 .paper--bold-header .pp-total--grand {
-  border-top-color: var(--accent);
+  border-top-color: var(--pp-accent);
 }
 
 /* Compact — small type, many rows on one page */
@@ -178,7 +234,6 @@
   font-size: 12.5px;
 }
 .paper--compact .pp-word { font-size: 26px; }
-.paper--compact .pp-mark { width: 38px; height: 38px; }
 .paper--compact .pp-row { padding: 8px 0; }
 .paper--compact .pp-row--head { padding: 7px 0; }
 .paper--compact .pp-totals { width: 240px; gap: 7px; }
@@ -194,7 +249,7 @@
   font-size: 22px;
   letter-spacing: 0.02em;
 }
-.paper--minimal .pp-mark { display: none; }
+.paper--minimal .pp-mark { display: none; } /* initials only: a real logo still shows */
 .paper--minimal .pp-table { border-top: 1px solid var(--paper-line); }
 .paper--minimal .pp-row { border-bottom: 0; padding: 10px 0; }
 .paper--minimal .pp-row--head { color: var(--paper-muted); }
@@ -206,12 +261,12 @@
 /* Ledger — tax-registered businesses, boxed table */
 .paper--ledger .pp-head {
   padding-bottom: 14px;
-  border-bottom: 2px solid var(--accent);
+  border-bottom: 2px solid var(--pp-accent);
 }
 .paper--ledger .pp-word { font-size: 32px; }
 .paper--ledger .pp-table {
   border: 1px solid var(--paper-line);
-  border-top: 2px solid var(--paper-ink);
+  border-top: 2px solid var(--pp-heading);
 }
 .paper--ledger .pp-row {
   padding: 11px 14px;
@@ -228,7 +283,7 @@
 
 /* Contractor — accent cap, dark total bar, trades and on-site work */
 .paper--contractor {
-  border-top: 10px solid var(--accent);
+  border-top: 10px solid var(--pp-accent);
 }
 .paper--contractor .pp-totals {
   width: 300px;
@@ -238,7 +293,7 @@
   margin-top: 4px;
   padding: 10px 14px;
   border-top: 0;
-  background: var(--paper-ink);
+  background: var(--pp-heading);
   color: var(--paper);
   font-size: 20px;
 }

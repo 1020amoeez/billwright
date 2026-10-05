@@ -1,6 +1,7 @@
 import type { DocKind, DocState } from './store';
 import { addDaysIso, todayIso } from './format';
 import { copyFor } from './paper';
+import { defaultLook } from './look';
 
 /**
  * The generator opens on the worked example from the design rather than an
@@ -22,6 +23,7 @@ export function defaultState(kind: DocKind): DocState {
     taxRate: '',
     discount: '',
     notes: copyFor[kind].defaultNote,
+    look: { ...defaultLook },
     items: [
       { id: 'seed1', description: 'Brand identity design', qty: '1', unitPrice: '1,800.00' },
       { id: 'seed2', description: 'Landing page build', qty: '1', unitPrice: '2,400.00' },

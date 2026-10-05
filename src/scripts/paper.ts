@@ -1,6 +1,7 @@
 import type { DocState, DocKind, Totals } from './store';
 import { parseAmount } from './format';
 import { formatAmount, formatMoney, formatQty, formatDate } from './format';
+import { defaultBrand, initialsOf, WATERMARK_OPACITY, type Brand } from './brand';
 
 export interface PaperCopy {
   title: string;
@@ -47,6 +48,19 @@ function orPlaceholder(value: string, placeholder: string): string {
 export interface RenderOptions {
   taxLabel: string;
   taxRate: number;
+  brand?: Brand;
+}
+
+/** The uploaded logo, else the business's initials on the accent, else nothing. */
+function markHtml(state: DocState, brand: Brand): string {
+  if (!brand.show) return '';
+  if (brand.logo) {
+    return `<img class="pp-logo pp-logo--${brand.size}" src="${esc(brand.logo)}" alt="">`;
+  }
+  const initials = initialsOf(state.businessName);
+  return initials
+    ? `<div class="pp-mark pp-mark--${brand.size}" aria-hidden="true">${esc(initials)}</div>`
+    : '';
 }
 
 export function renderPaper(state: DocState, totals: Totals, opts: RenderOptions): string {
@@ -78,14 +92,20 @@ export function renderPaper(state: DocState, totals: Totals, opts: RenderOptions
       ? `<div class="pp-total"><span>${esc(opts.taxLabel)} ${opts.taxRate}%</span><span>${formatMoney(totals.tax, cur)}</span></div>`
       : '';
 
-  return `
+  const brand = opts.brand ?? defaultBrand;
+  const watermark =
+    brand.logo && brand.watermark
+      ? `<img class="pp-watermark" src="${esc(brand.logo)}" alt="" style="opacity:${WATERMARK_OPACITY}">`
+      : '';
+
+  return `${watermark}
 <div class="pp-head">
   <div class="pp-title">
     <div class="pp-word">${esc(title)}</div>
     <div class="pp-meta">No. ${orPlaceholder(state.number, '0001')} &nbsp; ${c.dateLabel} ${esc(formatDate(state.issueDate))}</div>
   </div>
   <div class="pp-brand">
-    <div class="pp-mark"></div>
+    ${markHtml(state, brand)}
     <div class="pp-brand-name">${orPlaceholder(state.businessName, 'Your business')}</div>
   </div>
 </div>

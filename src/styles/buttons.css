@@ -97,6 +97,40 @@
   border-color: var(--border-strong);
 }
 
+/* Validation. The inset ring keeps the red when a hover rule sets the border. */
+[aria-invalid='true'] {
+  border-color: var(--danger) !important;
+  box-shadow: inset 0 0 0 1px var(--danger);
+}
+
+.field-error {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--danger);
+}
+
+.field-error::before {
+  content: '!';
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--danger);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+}
+
+.field-error--item {
+  margin: -2px 0 2px 2px;
+}
+
 select {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A9B1C3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");

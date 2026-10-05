@@ -1,4 +1,5 @@
 import { parseAmount } from './format';
+import { normaliseLook, type Look } from './look';
 
 export type DocKind = 'invoice' | 'quotation' | 'receipt';
 
@@ -26,6 +27,8 @@ export interface DocState {
   taxRate: string;
   discount: string;
   notes: string;
+  /** Colours and type family, set from the style box or its pickers. */
+  look: Look;
   items: LineItem[];
 }
 
@@ -69,6 +72,8 @@ export function load(kind: DocKind, fallback: DocState): DocState {
       merged.items = fallback.items;
     }
     merged.items = merged.items.map((item) => ({ ...emptyItem(), ...item }));
+    // Documents saved before the look existed have none; old or edited ones are re-checked.
+    merged.look = normaliseLook(parsed.look, fallback.look);
     return merged;
   } catch {
     return fallback;

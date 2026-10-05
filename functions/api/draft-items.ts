@@ -2,27 +2,18 @@
  * Cloudflare Pages Function: turns a plain-English description of work into
  * structured invoice line items.
  *
- * This is the only part of Billwright that leaves the browser, and it is only
- * reached when someone presses the button. It receives the sentence the user
- * typed and nothing else — no client name, no business details, no totals.
+ * The generator calls it when someone pauses while typing in the "Describe the
+ * work" box. It receives that text and nothing else — no client name, no
+ * business details, no totals.
  * Amounts are still added up locally by the app's own computeTotals.
  */
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
-
-interface Env {
-  ANTHROPIC_API_KEY?: string;
-  /** KV namespace used for per-IP daily quota. Required unless AI_ALLOW_UNLIMITED is set. */
-  AI_LIMITS?: KVNamespace;
-  /** Escape hatch for local development only. */
-  AI_ALLOW_UNLIMITED?: string;
-  AI_DAILY_LIMIT?: string;
-}
+import { apiFailure, checkQuota, json, NOT_CONFIGURED, readText, type Env } from '../_lib/ai';
 
 const MAX_INPUT = 600;
 const MAX_ITEMS = 12;
-const DEFAULT_DAILY_LIMIT = 20;
 
 const LineItem = z.object({
   description: z
@@ -54,63 +45,14 @@ Rules:
 - If the description is too vague to itemise, return a single item using the description
   itself, quantity 1 and price 0.`;
 
-function json(body: unknown, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store',
-    },
-  });
-}
-
-/** Per-IP daily quota. Fails closed: a missing binding disables the feature
- *  rather than leaving the API key billable without a ceiling. */
-async function checkQuota(request: Request, env: Env): Promise<Response | null> {
-  if (env.AI_ALLOW_UNLIMITED === 'true') return null;
-
-  if (!env.AI_LIMITS) {
-    return json(
-      { error: 'AI assist is not configured on this deployment.' },
-      503,
-    );
-  }
-
-  const limit = Number(env.AI_DAILY_LIMIT ?? DEFAULT_DAILY_LIMIT);
-  const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
-  const key = `draft:${new Date().toISOString().slice(0, 10)}:${ip}`;
-
-  const used = Number((await env.AI_LIMITS.get(key)) ?? '0');
-  if (used >= limit) {
-    return json(
-      { error: `That is ${limit} drafts today. Add the items by hand, or come back tomorrow.` },
-      429,
-    );
-  }
-
-  await env.AI_LIMITS.put(key, String(used + 1), { expirationTtl: 60 * 60 * 24 });
-  return null;
-}
-
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!env.ANTHROPIC_API_KEY) {
-    return json({ error: 'AI assist is not configured on this deployment.' }, 503);
+    return json({ error: NOT_CONFIGURED }, 503);
   }
 
-  let text: string;
-  try {
-    const body = (await request.json()) as { text?: unknown };
-    text = typeof body.text === 'string' ? body.text.trim() : '';
-  } catch {
-    return json({ error: 'Could not read that request.' }, 400);
-  }
-
-  if (text.length < 3) {
-    return json({ error: 'Describe the work in a sentence or two first.' }, 400);
-  }
-  if (text.length > MAX_INPUT) {
-    return json({ error: `Keep the description under ${MAX_INPUT} characters.` }, 400);
-  }
+  const read = await readText(request, MAX_INPUT);
+  if (read instanceof Response) return read;
+  const { text } = read;
 
   const blocked = await checkQuota(request, env);
   if (blocked) return blocked;
@@ -145,18 +87,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     return json({ items });
   } catch (error) {
-    if (error instanceof Anthropic.RateLimitError) {
-      return json({ error: 'Busy right now. Try again in a moment.' }, 429);
-    }
-    if (error instanceof Anthropic.AuthenticationError) {
-      console.error('Anthropic auth failed');
-      return json({ error: 'AI assist is not configured on this deployment.' }, 503);
-    }
-    if (error instanceof Anthropic.APIError) {
-      console.error('Anthropic API error', error.status, error.message);
-      return json({ error: 'The drafting service failed. Add the items by hand.' }, 502);
-    }
-    console.error('draft-items failed', error);
-    return json({ error: 'Something went wrong. Add the items by hand.' }, 500);
+    return apiFailure(error, 'draft-items');
   }
 };

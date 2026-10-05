@@ -1,6 +1,8 @@
 import type { DocState, Totals } from './store';
 import { parseAmount, formatAmount, formatMoney, formatQty, formatDate } from './format';
 import { copyFor } from './paper';
+import { defaultLook, hexToRgb, normaliseLook, textOn } from './look';
+import { defaultBrand, initialsOf, pdfMarkHeight, WATERMARK_OPACITY, type Brand } from './brand';
 
 /**
  * pdf-lib's standard fonts are WinAnsi-encoded, so anything outside that set
@@ -19,6 +21,14 @@ function winAnsi(text: string): string {
 export interface PdfOptions {
   taxLabel: string;
   taxRate: number;
+  brand?: Brand;
+}
+
+function dataUrlBytes(src: string): Uint8Array {
+  const binary = atob(src.slice(src.indexOf(',') + 1));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
 }
 
 const A4 = { w: 595.28, h: 841.89 };
@@ -33,13 +43,25 @@ export async function buildPdf(
 
   const doc = await PDFDocument.create();
   let page = doc.addPage([A4.w, A4.h]);
-  const regular = await doc.embedFont(StandardFonts.Helvetica);
-  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+  // The three standard PDF families line up with the look's three fonts.
+  const look = normaliseLook(state.look ?? defaultLook);
+  const family = {
+    sans: [StandardFonts.Helvetica, StandardFonts.HelveticaBold],
+    serif: [StandardFonts.TimesRoman, StandardFonts.TimesRomanBold],
+    mono: [StandardFonts.Courier, StandardFonts.CourierBold],
+  }[look.font];
+  const regular = await doc.embedFont(family[0]);
+  const bold = await doc.embedFont(family[1]);
+  const fromHex = (hex: string) => {
+    const [r, g, b] = hexToRgb(hex);
+    return rgb(r / 255, g / 255, b / 255);
+  };
 
   const ink = rgb(0.082, 0.102, 0.157); // #151A28
   const muted = rgb(0.4, 0.44, 0.541); // #66708A
   const line = rgb(0.902, 0.91, 0.937); // #E6E8EF
-  const accent = rgb(1, 0.69, 0.125); // #FFB020
+  const accent = fromHex(look.accent);
+  const heading = fromHex(look.heading);
   const white = rgb(1, 1, 1);
 
   const c = copyFor[state.kind];
@@ -77,11 +99,74 @@ export async function buildPdf(
       color,
     });
 
+  // The mark: uploaded logo, else initials on the accent (not on Minimal).
+  const brand = opts.brand ?? defaultBrand;
+  const logo =
+    (brand.show || brand.watermark) && brand.logo
+      ? brand.logo.startsWith('data:image/jpeg')
+        ? await doc.embedJpg(dataUrlBytes(brand.logo))
+        : await doc.embedPng(dataUrlBytes(brand.logo))
+      : null;
+  const initials =
+    brand.show && !logo && state.template !== 'minimal' ? winAnsi(initialsOf(state.businessName)) : '';
+
+  // pdf-lib paints in call order, so the watermark goes on each sheet before anything else.
+  const drawWatermark = (sheet: typeof page) => {
+    if (!logo || !brand.watermark) return;
+    let w = 330;
+    let h = w / brand.ratio;
+    if (h > 360) {
+      h = 360;
+      w = h * brand.ratio;
+    }
+    sheet.drawImage(logo, {
+      x: (A4.w - w) / 2,
+      y: (A4.h - h) / 2,
+      width: w,
+      height: h,
+      opacity: WATERMARK_OPACITY,
+    });
+  };
+  drawWatermark(page);
+
+  /** Draws the mark flush right with its top at `top`; returns its height, or 0. */
+  const drawMark = (top: number, maxHeight: number, onDark: boolean): number => {
+    if (!brand.show) return 0;
+    let h = Math.min(pdfMarkHeight[brand.size], maxHeight);
+    if (logo) {
+      let w = h * brand.ratio;
+      if (w > 150) {
+        w = 150;
+        h = w / brand.ratio;
+      }
+      if (onDark) {
+        // The same white chip as the preview, so dark logos show on the band
+        page.drawRectangle({ x: right - w - 8, y: top - h - 4, width: w + 8, height: h + 8, color: white });
+        page.drawImage(logo, { x: right - w - 4, y: top - h, width: w, height: h });
+      } else {
+        page.drawImage(logo, { x: right - w, y: top - h, width: w, height: h });
+      }
+      return h;
+    }
+    if (!initials) return 0;
+    page.drawRectangle({ x: right - h, y: top - h, width: h, height: h, color: accent });
+    const size = h * 0.38;
+    const width = bold.widthOfTextAtSize(initials, size);
+    page.drawText(initials, {
+      x: right - h / 2 - width / 2,
+      y: top - h / 2 - size * 0.35,
+      size,
+      font: bold,
+      color: fromHex(textOn(look.accent)),
+    });
+    return h;
+  };
+
   let y = A4.h - MARGIN;
 
   // Header band for the templates that have one
   if (state.template === 'bold-header') {
-    page.drawRectangle({ x: 0, y: y - 46, width: A4.w, height: 78, color: ink });
+    page.drawRectangle({ x: 0, y: y - 46, width: A4.w, height: 78, color: heading });
     text(title, MARGIN, y - 12, 26, bold, white);
     text(
       `No. ${state.number || '0001'}   ${c.dateLabel} ${formatDate(state.issueDate)}`,
@@ -91,13 +176,15 @@ export async function buildPdf(
       regular,
       rgb(0.75, 0.78, 0.84),
     );
-    page.drawRectangle({ x: right - 30, y: y - 22, width: 30, height: 30, color: accent });
+    // Centred in the band, which runs from y - 46 to y + 32
+    const cap = logo ? 32 : 40; // a logo also has its chip's padding
+    drawMark(y - 7 + Math.min(pdfMarkHeight[brand.size], cap) / 2, cap, true);
     y -= 78;
   } else {
     if (state.template === 'contractor') {
       page.drawRectangle({ x: 0, y: A4.h - 10, width: A4.w, height: 10, color: accent });
     }
-    text(title, MARGIN, y - 26, 28, bold);
+    text(title, MARGIN, y - 26, 28, bold, heading);
     text(
       `No. ${state.number || '0001'}   ${c.dateLabel} ${formatDate(state.issueDate)}`,
       MARGIN,
@@ -106,11 +193,10 @@ export async function buildPdf(
       regular,
       muted,
     );
-    if (state.template !== 'minimal') {
-      page.drawRectangle({ x: right - 38, y: y - 38, width: 38, height: 38, color: accent });
-    }
-    textRight(state.businessName || 'Your business', right, y - 52, 10, bold);
-    y -= 72;
+    const markHeight = drawMark(y, 60, false);
+    const nameY = y - (markHeight ? markHeight + 14 : 14);
+    textRight(state.businessName || 'Your business', right, nameY, 10, bold);
+    y -= Math.max(72, markHeight + 34);
   }
 
   if (isLedger) {
@@ -147,7 +233,7 @@ export async function buildPdf(
   const BOTTOM = MARGIN + 34; // clear space kept for the footer line
 
   const drawTableHead = () => {
-    rule(y + 14, 2, ink);
+    rule(y + 14, 2, heading);
     text('Description', MARGIN, y, 9.5, regular, muted);
     textRight('Qty', colQty, y, 9.5, regular, muted);
     textRight('Unit price', colUnit, y, 9.5, regular, muted);
@@ -159,6 +245,7 @@ export async function buildPdf(
 
   const breakPage = () => {
     page = doc.addPage([A4.w, A4.h]);
+    drawWatermark(page);
     pages.push(page);
     y = A4.h - MARGIN - 10;
   };
@@ -218,7 +305,7 @@ export async function buildPdf(
       y: y - 9,
       width: right - totalsLeft,
       height: 31,
-      color: ink,
+      color: heading,
     });
     text('Total', totalsLeft + 12, y, 14, bold, white);
     textRight(formatMoney(totals.total, cur), right - 12, y, 14, bold, white);
@@ -227,10 +314,10 @@ export async function buildPdf(
       start: { x: totalsLeft, y: ruleY },
       end: { x: right, y: ruleY },
       thickness: 2,
-      color: state.template === 'bold-header' ? accent : ink,
+      color: state.template === 'bold-header' ? accent : heading,
     });
-    text('Total', totalsLeft, y, 14, bold);
-    textRight(formatMoney(totals.total, cur), right, y, 14, bold);
+    text('Total', totalsLeft, y, 14, bold, heading);
+    textRight(formatMoney(totals.total, cur), right, y, 14, bold, heading);
   }
 
   // Footers, drawn once the page count is known

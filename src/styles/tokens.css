@@ -81,6 +81,7 @@
   --text-body: #C9CFDB;
   --text-muted: #A9B1C3;
   --text-faint: #7E8698;
+  --danger: #FF7A7A;     /* required marks and errors: 6.7:1 or better on dark grounds */
 
   /* Accent is legible as text on a dark ground, so it is the accent itself. */
   --accent-text: #FFB020;
@@ -115,6 +116,7 @@
      clear 4.5:1 on #101522 fall well under it on an off-white ground. */
   --text-muted: #4F5768;
   --text-faint: #666D80;
+  --danger: #C0262D;     /* 5.5:1 or better on the light grounds */
 
   /* #FFB020 on white is 1.7:1 — unusable as text. This is the readable cut. */
   --accent-text: #8A5A00;

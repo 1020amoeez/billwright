@@ -39,20 +39,99 @@ const noun = copy.title.toLowerCase();
     <!-- Form -->
     <form class="form" id="pane-form" role="tabpanel" aria-labelledby="tab-form" novalidate>
       <section class="form__section">
+        <h2>Design</h2>
+        <!-- Colour names, fonts and template names apply instantly on this
+             device; anything else is read by AI after a pause in typing. -->
+        <div class="ai-box">
+          <label class="field">
+            <span class="ai-box__label">Describe the look</span>
+            <input
+              type="text"
+              id="style-text"
+              maxlength="300"
+              autocomplete="off"
+              placeholder="Make it navy with a serif font"
+            />
+          </label>
+          <p class="ai-box__status" id="style-status" aria-live="polite"></p>
+        </div>
+        <div class="look-row">
+          <label class="look-pick">
+            <input type="color" data-look="accent" value={state.look.accent} />
+            Accent
+          </label>
+          <label class="look-pick">
+            <input type="color" data-look="heading" value={state.look.heading} />
+            Headings
+          </label>
+          <label class="look-font">
+            Font
+            <select data-look="font">
+              <option value="sans">Sans</option>
+              <option value="serif">Serif</option>
+              <option value="mono">Mono</option>
+            </select>
+          </label>
+          <button type="button" class="btn-outline look-reset" data-action="reset-look">Reset</button>
+        </div>
+
+        <!-- The logo is read and stored in this browser; it is never uploaded. -->
+        <div class="logo-box" id="logo-box">
+          <div class="logo-box__thumb" id="logo-thumb" aria-hidden="true"></div>
+          <div class="logo-box__main">
+            <div class="logo-box__actions">
+              <button type="button" class="btn-outline logo-box__btn" data-action="pick-logo" id="pick-logo">
+                Upload logo
+              </button>
+              <button type="button" class="btn-outline logo-box__btn" data-action="match-logo" id="match-logo" hidden>
+                Match colours
+              </button>
+              <button type="button" class="logo-box__link" data-action="remove-logo" id="remove-logo" hidden>
+                Remove
+              </button>
+            </div>
+            <div class="logo-box__options">
+              <label class="look-font">
+                Size
+                <select data-brand="size">
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                  <option value="large">Large</option>
+                </select>
+              </label>
+              <label class="logo-box__check">
+                <input type="checkbox" data-brand="show" checked />
+                <span id="show-label">Show initials</span>
+              </label>
+              <label class="logo-box__check" id="watermark-option" hidden>
+                <input type="checkbox" data-brand="watermark" />
+                Watermark
+              </label>
+            </div>
+            <p class="ai-box__status" id="logo-status" aria-live="polite">
+              PNG, JPG or SVG, or drop it on the preview. It stays on this device.
+            </p>
+          </div>
+          <input type="file" id="logo-file" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden />
+        </div>
+      </section>
+
+      <section class="form__section">
         <h2>Your business</h2>
+        <p class="form__legend"><span class="req" aria-hidden="true">*</span> Required to download</p>
         <div class="form__grid">
           <label class="field">
-            Business name
-            <input type="text" data-field="businessName" value={state.businessName} />
+            <span>Business name <span class="req" aria-hidden="true">*</span></span>
+            <input type="text" data-field="businessName" required aria-required="true" autocomplete="organization" value={state.businessName} />
           </label>
           <label class="field">
             Email
-            <input type="email" data-field="businessEmail" placeholder="hello@yourbusiness.com" value={state.businessEmail} />
+            <input type="email" data-field="businessEmail" autocomplete="email" placeholder="hello@yourbusiness.com" value={state.businessEmail} />
           </label>
         </div>
         <label class="field">
-          Address
-          <input type="text" data-field="businessAddress" placeholder="Street, city, postcode" value={state.businessAddress} />
+          <span>Address <span class="req" aria-hidden="true">*</span></span>
+          <input type="text" data-field="businessAddress" required aria-required="true" autocomplete="street-address" placeholder="Street, city, postcode" value={state.businessAddress} />
         </label>
       </section>
 
@@ -60,22 +139,22 @@ const noun = copy.title.toLowerCase();
         <h2>Bill to</h2>
         <div class="form__grid">
           <label class="field">
-            Client name
-            <input type="text" data-field="clientName" value={state.clientName} />
+            <span>Client name <span class="req" aria-hidden="true">*</span></span>
+            <input type="text" data-field="clientName" required aria-required="true" value={state.clientName} />
           </label>
           <label class="field">
-            {copy.dueLabel === 'Due' ? 'Due date' : copy.dueLabel}
-            <input type="date" data-field="dueDate" value={state.dueDate} />
+            <span>{copy.dueLabel === 'Due' ? 'Due date' : copy.dueLabel} <span class="req" aria-hidden="true">*</span></span>
+            <input type="date" data-field="dueDate" required aria-required="true" value={state.dueDate} />
           </label>
         </div>
         <div class="form__grid">
           <label class="field">
-            {copy.title} number
-            <input type="text" data-field="number" value={state.number} />
+            <span>{copy.title} number <span class="req" aria-hidden="true">*</span></span>
+            <input type="text" data-field="number" required aria-required="true" value={state.number} />
           </label>
           <label class="field">
-            Issue date
-            <input type="date" data-field="issueDate" value={state.issueDate} />
+            <span>Issue date <span class="req" aria-hidden="true">*</span></span>
+            <input type="date" data-field="issueDate" required aria-required="true" value={state.issueDate} />
           </label>
         </div>
       </section>
@@ -85,40 +164,27 @@ const noun = copy.title.toLowerCase();
           <h2>Items</h2>
           <button type="button" class="btn-outline form__add" data-action="add-item">Add item</button>
         </div>
-        <!-- Opt-in AI drafting. Collapsed by default and clearly labelled,
-             because using it is the one time anything leaves the browser. -->
-        <details class="draft">
-          <summary>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"></path>
-            </svg>
-            Describe the work instead
-          </summary>
-          <div class="draft__body">
-            <label class="field">
-              <span class="visually-hidden">Describe the work you did</span>
-              <textarea
-                rows="3"
-                id="draft-text"
-                maxlength="600"
-                placeholder="Built a 5-page WordPress site, 2 rounds of revisions, 40 hours at 3,500 an hour"
-              ></textarea>
-            </label>
-            <div class="draft__actions">
-              <button type="button" class="btn-accent draft__go" data-action="draft">
-                Draft line items
-              </button>
-              <p class="draft__note">
-                Sends only this sentence, and only when you press the button. Your client, business
-                details and amounts stay on your device.
-              </p>
-            </div>
-          </div>
-        </details>
+        <!-- AI drafting. Runs after a pause in typing, and sends only this box. -->
+        <div class="ai-box">
+          <label class="field">
+            <span class="ai-box__label">Describe the work, and the items fill in as you type</span>
+            <textarea
+              rows="3"
+              id="draft-text"
+              maxlength="600"
+              placeholder="Built a 5-page WordPress site, 2 rounds of revisions, 40 hours at 3,500 an hour"
+            ></textarea>
+          </label>
+          <p class="ai-box__status" id="draft-status" aria-live="polite"></p>
+          <p class="ai-box__note">
+            Sends only what you type in these AI boxes. Your client, business details and amounts
+            stay on your device.
+          </p>
+        </div>
 
         <div class="items">
           <div class="items__head">
-            <div>Description</div>
+            <div>Item <span class="req" aria-hidden="true">*</span></div>
             <div>Qty</div>
             <div>Unit price</div>
             <div></div>
@@ -143,8 +209,8 @@ const noun = copy.title.toLowerCase();
       </div>
 
       <label class="field" id="custom-rate-field" hidden>
-        Tax rate (%)
-        <input type="text" inputmode="decimal" data-field="taxRate" placeholder="e.g. 8.25" value={state.taxRate} />
+        <span>Tax rate (%) <span class="req" aria-hidden="true">*</span></span>
+        <input type="text" inputmode="decimal" data-field="taxRate" aria-required="true" placeholder="e.g. 8.25" value={state.taxRate} />
       </label>
 
       <label class="field">
@@ -234,68 +300,190 @@ const noun = copy.title.toLowerCase();
     font-size: 14px;
   }
 
-  .draft {
+  .ai-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
     border: 1px solid var(--border);
     border-radius: var(--r-card);
     background: var(--bg-raised);
-    overflow: hidden;
   }
 
-  .draft > summary {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    min-height: 44px;
-    padding: 0 14px;
-    font-size: 14px;
+  .ai-box__label {
     font-weight: 500;
-    color: var(--text-muted);
-    cursor: pointer;
-    list-style: none;
   }
 
-  .draft > summary::-webkit-details-marker { display: none; }
-  .draft > summary:hover { color: var(--accent-text); }
-  .draft[open] > summary {
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .draft__body {
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .draft__body textarea {
+  .ai-box textarea {
     height: auto;
     padding: 10px 12px;
     resize: vertical;
     line-height: 1.5;
   }
 
-  .draft__actions {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
+  .ai-box__status {
+    min-height: 18px;
+    font-size: 13px;
+    color: var(--text-muted);
   }
 
-  .draft__go {
-    flex-shrink: 0;
-    height: 40px;
-    padding: 0 16px;
+  .ai-box__status[data-state='busy'] { color: var(--accent-text); }
+  .ai-box__status[data-state='error'] { color: var(--text); }
+
+  .ai-box__note {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--text-faint);
+  }
+
+  .look-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+  }
+
+  .look-pick {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .look-pick input {
+    width: 36px;
+    height: 36px;
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    cursor: pointer;
+  }
+
+  .look-font {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .look-font select {
+    height: 36px;
+    padding: 0 10px;
+    border-radius: var(--r-input);
+    border: 1px solid var(--border-strong);
+    background-color: var(--panel);
+    color: var(--text);
     font-size: 14px;
   }
 
-  .draft__go[disabled] {
-    opacity: 0.65;
-    cursor: progress;
+  .logo-box {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    background: var(--bg-raised);
+    transition: border-color 0.15s;
   }
 
-  .draft__note {
+  .logo-box.is-dropping,
+  .preview.is-dropping {
+    border-color: var(--accent);
+    outline: 2px dashed var(--accent);
+    outline-offset: -8px;
+  }
+
+  .logo-box__thumb {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    font-weight: 700;
+    font-size: 22px;
+  }
+
+  .logo-box__thumb img {
+    max-width: 56px;
+    max-height: 56px;
+    object-fit: contain;
+  }
+
+  .logo-box__main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .logo-box__actions,
+  .logo-box__options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+  }
+
+  .logo-box__btn {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .logo-box__link {
+    min-height: 36px;
+    padding: 0 4px;
+    border: 0;
+    background: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .logo-box__link:hover { color: var(--text); }
+
+  .logo-box__check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .logo-box__check input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+  }
+
+  .look-reset {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 14px;
+    margin-left: auto;
+  }
+
+  /* Required marks and inline errors */
+  .req {
+    color: var(--danger);
+    font-weight: 600;
+  }
+
+  .form__legend {
+    margin-top: -6px;
     font-size: 12px;
-    line-height: 1.45;
     color: var(--text-faint);
   }
 
