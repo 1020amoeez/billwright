@@ -8,7 +8,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Invoice templates',
-    url: 'https://billwright.pages.dev/invoice-templates',
+    url: new URL('/invoice-templates', Astro.site).href,
     description:
       'Six free invoice templates for freelancers, contractors and small businesses. Pick a layout and fill it in the generator.',
   },

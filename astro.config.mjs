@@ -77,7 +77,7 @@ function pagesFunctionsInDev() {
 }
 
 export default defineConfig({
-  site: 'https://billwright.pages.dev',
+  site: 'https://billwright.work',
   output: 'static',
   integrations: [
     sitemap({

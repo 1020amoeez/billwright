@@ -15,7 +15,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Billwright',
-    url: 'https://billwright.pages.dev/',
+    url: new URL('/', Astro.site).href,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     description:

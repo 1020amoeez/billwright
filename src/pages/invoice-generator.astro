@@ -7,7 +7,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Billwright invoice generator',
-    url: 'https://billwright.pages.dev/invoice-generator',
+    url: new URL('/invoice-generator', Astro.site).href,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },

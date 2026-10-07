@@ -22,7 +22,7 @@ const { href, title, description, heading, standfirst, faqs, related, breadcrumb
 
 const tool = toolByHref(href);
 const sidebarTools = relatedTools(href, related);
-const site = 'https://billwright.pages.dev';
+const site = Astro.site!.origin;
 
 const jsonLd = [
   {

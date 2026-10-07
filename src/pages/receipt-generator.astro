@@ -7,7 +7,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Billwright receipt generator',
-    url: 'https://billwright.pages.dev/receipt-generator',
+    url: new URL('/receipt-generator', Astro.site).href,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },

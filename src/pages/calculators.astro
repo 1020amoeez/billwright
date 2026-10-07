@@ -11,7 +11,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Billwright tools',
-    url: 'https://billwright.pages.dev/calculators',
+    url: new URL('/calculators', Astro.site).href,
     description: 'Free invoicing tools and small-business calculators, all running in your browser.',
   },
 ];
